@@ -289,7 +289,7 @@
   <button class="float-btn" onclick="openDrawer()">⋮</button>
 </div>
 <!-- TODO: 배경음악 파일 교체 → src="music.mp3" -->
-<audio id="bgm" loop src="music.mp3"></audio>
+<audio id="bgm" loop autoplay src="https://raw.githubusercontent.com/jua930128/CHOSHIM_WEDDING/main/music.mp3"></audio>
 
 <!-- ═══ ⋯ 드로어 메뉴 ═══ -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
@@ -936,13 +936,33 @@
   galEl.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) slideGal(dx < 0 ? 1 : -1); });
   buildDots();
 
-  /* ── 음악 ── */
+  /* ── 음악 자동재생 ── */
   let musicOn = false;
+  const bgm = document.getElementById('bgm');
+  const musicBtn = document.getElementById('music-btn');
+
+  // 첫 터치/클릭 시 자동재생 시도
+  function tryAutoPlay() {
+    bgm.play().then(() => {
+      musicOn = true;
+      musicBtn.textContent = '🎵';
+    }).catch(() => {});
+    document.removeEventListener('click', tryAutoPlay);
+    document.removeEventListener('touchstart', tryAutoPlay);
+  }
+  document.addEventListener('click', tryAutoPlay);
+  document.addEventListener('touchstart', tryAutoPlay);
+
   function toggleMusic() {
-    const bgm = document.getElementById('bgm');
-    const btn = document.getElementById('music-btn');
-    if (musicOn) { bgm.pause(); btn.textContent = '🔇'; musicOn = false; }
-    else { bgm.play().catch(()=>{}); btn.textContent = '🎵'; musicOn = true; }
+    if (musicOn) {
+      bgm.pause();
+      musicBtn.textContent = '🔇';
+      musicOn = false;
+    } else {
+      bgm.play().catch(() => {});
+      musicBtn.textContent = '🎵';
+      musicOn = true;
+    }
   }
 
   /* ── 드로어 ── */
