@@ -101,8 +101,8 @@
     .ph { aspect-ratio: 4/3; background: linear-gradient(135deg,#e8ddd3,#d4c5b8); display: flex; align-items: center; justify-content: center; color: var(--text-4); font-size: 13px; }
     .ph.tall { aspect-ratio: 3/4; }
     .ph.square { aspect-ratio: 1/1; }
-    .full-photo { width: 100%; overflow: hidden; }
-    .full-photo img, .full-photo .ph { width: 100%; display: block; }
+    .full-photo { width: 100%; aspect-ratio: 3 / 2; overflow: hidden; }
+    .full-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
 
     /* ── 인사말 ── */
     .greeting-text { font-size: 14px; line-height: 2.5; color: var(--text-2); padding: 0 32px; word-break: keep-all; }
@@ -118,6 +118,8 @@
     .interview-q { font-size: 14px; color: var(--text-1); margin-bottom: 12px; line-height: 1.8; }
     .interview-a { font-size: 13px; color: var(--text-2); line-height: 2.2; white-space: pre-line; }
 
+    .interview-photo { width: 100%; aspect-ratio: 1 / 1.2; object-fit: cover; object-position: center; border-radius: 4px; min-width: 0; }
+    
     /* ── 프로필 ── */
     .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 0 32px; text-align: center; }
     .profile-label { font-size: 12px; letter-spacing: .08em; color: var(--text-2); }
@@ -148,7 +150,7 @@
     .venue-floor { font-size: 13px; color: var(--accent); letter-spacing: .1em; margin-top: 4px; }
     .venue-addr { font-size: 13px; color: var(--text-2); line-height: 1.9; margin-top: 12px; }
     .venue-tel { font-size: 13px; color: var(--text-3); margin-top: 4px; }
-    .venue-map { margin: 20px 32px 0; aspect-ratio: 16/9; background: #e8e2dc; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--text-4); font-size: 13px; }
+    .venue-map { margin: 20px 32px 0; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; }
     .map-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; padding: 0 32px; }
     .map-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 20px; border-radius: 10px; font-family: 'Gowun Dodum',sans-serif; font-size: 13px; text-decoration: none; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-1); }
     .transport { padding: 0 32px; text-align: left; margin-top: 24px; }
@@ -321,7 +323,7 @@
 
 <!-- ═══ 1. 메인 히어로 ═══ -->
 <div class="hero">
-  <img class="hero-img" src="CBK_1593.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+  <img class="hero-img" src="main1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
   <div class="hero-placeholder" style="display:none">메인 사진을 넣어주세요</div>
   <div class="hero-overlay">
     <div class="hero-script">Getting<br/>Married</div>
@@ -347,7 +349,7 @@
 </section>
 
 <!-- ═══ 3. 중간 사진 1 ═══ -->
-<div class="full-photo fade"><div class="ph">중간 사진 1</div></div>
+<div class="full-photo fade"><img class="ph" src="middle1.jpg" alt=""></div>
 
 <!-- ═══ 4. 인터뷰 ═══ -->
 <section id="sec-interview">
@@ -356,8 +358,8 @@
     <div class="section-title">우리 두 사람의 이야기</div>
   </div>
   <div class="interview-photos fade">
-    <div class="ph square">신랑 사진</div>
-    <div class="ph square">신부 사진</div>
+    <img class="interview-photo" src="cho1.jpg" alt="신랑 사진">
+    <img class="interview-photo" src="shim1.jpg" alt="신부 사진">
   </div>
   <div class="interview-qa fade">
     <div class="interview-item">
@@ -404,7 +406,8 @@
 </section>
 
 <!-- ═══ 6. 중간 사진 2 ═══ -->
-<div class="full-photo fade"><div class="ph">중간 사진 2</div></div>
+<div class="full-photo fade"><img class="ph" src="middle2.jpg" alt=""></div>
+
 
 <!-- ═══ 7. 캘린더 ═══ -->
 <section id="sec-calendar">
@@ -446,7 +449,7 @@
     <div class="venue-addr">인천 부평구 길주로 623<br/><span style="color:var(--text-3)">우) 21344</span></div>
     <div class="venue-tel">Tel. 032-503-1555</div>
   </div>
-  <div class="venue-map fade">지도 영역</div>
+<div class="venue-map fade" id="naver-map"></div>
   <div class="map-buttons fade">
     <a class="map-btn" href="https://map.kakao.com/link/search/에스칼라디움웨딩홀" target="_blank">🗺️ 카카오맵으로 보기</a>
     <a class="map-btn" href="https://map.naver.com/v5/search/에스칼라디움웨딩홀" target="_blank">🗺️ 네이버지도로 보기</a>
@@ -1088,6 +1091,23 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
   }
+</script>
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=여기에_클라이언트_ID"></script>
+
+<script>
+    const weddingPosition = new naver.maps.LatLng(
+        37.5070, 126.7380
+    );
+
+    const map = new naver.maps.Map('naver-map', {
+        center: weddingPosition,
+        zoom: 17
+    });
+
+    new naver.maps.Marker({
+        position: weddingPosition,
+        map: map
+    });
 </script>
 </body>
 </html>
