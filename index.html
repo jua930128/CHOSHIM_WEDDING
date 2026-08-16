@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -19,11 +20,16 @@
       --text-1: #2c2825; --text-2: #6b5e55; --text-3: #a09890; --text-4: #c8c0b8;
       --accent: #b27085; --border: #e8e2dc; --card-bg: #ffffff; --sunday: #f79e9e;
     }
+    html {
+      background: #e8e2dc;
+      min-height: 100%;
+    }
     body {
       background: var(--bg); color: var(--text-1);
       font-family: 'Gowun Dodum', sans-serif; font-size: 14px; line-height: 2;
       max-width: 480px; margin: 0 auto; overflow-x: hidden;
-      padding-bottom: 80px; /* 하단 탭바 여백 */
+      box-shadow: 0 0 40px rgba(0,0,0,0.1);
+      min-height: 100vh;
     }
     .fade { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
     .fade.show { opacity: 1; transform: translateY(0); }
@@ -40,34 +46,44 @@
     .hero-script { font-family: 'Crimson Pro',serif; font-style: italic; font-size: clamp(32px,10vw,48px); font-weight: 300; color: white; line-height: 1.1; text-shadow: 0 2px 12px rgba(0,0,0,.25); }
     .hero-bottom { display: flex; justify-content: space-between; padding: 0 20px; font-family: 'Noto Serif KR',serif; font-size: 15px; font-weight: 700; color: white; text-shadow: 0 1px 8px rgba(0,0,0,.3); }
 
-    /* ── 우측 상단 버튼들 ── */
-    .top-btns { position: fixed; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 200; }
-    .top-btn {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(255,255,255,0.92); border: none; cursor: pointer;
+    /* ── 플로팅 버튼 그룹 (우측 하단, 세로 스택) ── */
+    .float-btns {
+      position: fixed; bottom: 24px; right: 16px;
+      display: flex; flex-direction: column; gap: 10px;
+      align-items: center; z-index: 200;
+    }
+    @media (min-width: 480px) {
+      .float-btns { right: calc(50% - 480px/2 + 16px); }
+    }
+    .float-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.95); border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.12); font-size: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.18); font-size: 18px;
+      transition: opacity 0.3s ease;
     }
+    .float-btn.hidden { opacity: 0; pointer-events: none; }
 
-    /* ── 하단 탭바 ── */
-    .bottom-tab {
-      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: 480px;
-      background: white; border-top: 1px solid var(--border);
-      display: flex; z-index: 200;
-    }
-    .tab-item {
-      flex: 1; padding: 10px 4px 14px; text-align: center;
-      cursor: pointer; border: none; background: none;
-      font-family: 'Gowun Dodum',sans-serif; color: var(--text-2);
-    }
-    .tab-item .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
-    .tab-item .tab-label { font-size: 10px; color: var(--text-3); display: block; letter-spacing: -0.02em; }
+
 
     /* ── ⋯ 메뉴 드로어 ── */
+    /* 드로어를 480px 안에 가두는 컨테이너 */
     .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 300; opacity: 0; pointer-events: none; transition: opacity .3s; }
     .drawer-overlay.open { opacity: 1; pointer-events: all; }
-    .drawer { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100%; background: white; z-index: 301; transition: right .3s ease; overflow-y: auto; padding: 20px 0 40px; }
+    .drawer-container {
+      position: fixed; top: 0; bottom: 0;
+      left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 480px;
+      pointer-events: none; overflow: hidden; z-index: 301;
+    }
+    .drawer-container.open { pointer-events: all; }
+    .drawer {
+      position: absolute; top: 0; right: -100%; bottom: 0;
+      width: 75%; max-width: 320px;
+      background: white;
+      transition: right .3s ease;
+      overflow-y: auto; padding: 20px 0 40px;
+    }
     .drawer.open { right: 0; }
     .drawer-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-2); }
     .drawer-section { padding: 12px 24px 4px; font-size: 11px; color: var(--text-3); letter-spacing: 0.1em; }
@@ -263,16 +279,18 @@
 </head>
 <body>
 
-<!-- ═══ 우측 상단 버튼 (음악 + 메뉴) ═══ -->
-<div class="top-btns">
-  <button class="top-btn" id="music-btn" onclick="toggleMusic()" title="음악">🎵</button>
-  <button class="top-btn" onclick="openDrawer()" title="메뉴">⋮</button>
+<!-- ═══ 플로팅 버튼 그룹 ═══ -->
+<div class="float-btns">
+  <button class="float-btn hidden" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <button class="float-btn" id="music-btn" onclick="toggleMusic()">🎵</button>
+  <button class="float-btn" onclick="openDrawer()">⋮</button>
 </div>
 <!-- TODO: 배경음악 파일 교체 → src="music.mp3" -->
 <audio id="bgm" loop src="music.mp3"></audio>
 
 <!-- ═══ ⋯ 드로어 메뉴 ═══ -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer-container" id="drawer-container">
 <div class="drawer" id="drawer">
   <button class="drawer-close" onclick="closeDrawer()">✕</button>
   <div style="height:48px;"></div>
@@ -295,6 +313,7 @@
   <a class="drawer-nav-item" href="#sec-rsvp" onclick="closeDrawer()">참석의사</a>
   <a class="drawer-nav-item" href="#sec-account" onclick="closeDrawer()">마음전하실 곳</a>
   <a class="drawer-nav-item" href="#sec-photo-share" onclick="closeDrawer()">축하 사진 공유</a>
+</div>
 </div>
 
 <!-- ═══ 1. 메인 히어로 ═══ -->
@@ -607,17 +626,10 @@
 </div>
 <footer><p>조건희 · 심주아 · 2026.11.21</p><p style="margin-top:4px">Copyright 2026. CHOSHIM WEDDING.</p></footer>
 
-<!-- ═══ 하단 탭바 ═══ -->
-<div class="bottom-tab">
-  <button class="tab-item" onclick="alert('하객나우 연동 예정')"><span class="tab-icon">♦</span><span class="tab-label">하객 나우</span></button>
-  <button class="tab-item" onclick="addReminder()"><span class="tab-icon">🔔</span><span class="tab-label">리마인더<br/>알림받기</span></button>
-  <button class="tab-item" onclick="copyLink()"><span class="tab-icon">🔗</span><span class="tab-label">청첩장<br/>링크복사</span></button>
-  <button class="tab-item" onclick="shareKakao()"><span class="tab-icon">💬</span><span class="tab-label">카카오톡<br/>공유하기</span></button>
-</div>
+
 
 <!-- ═══ 모달: 연락하기 ═══ -->
-<div class="modal-overlay" id="modal-contact">
-  <div class="modal-box">
+<div class="modal-overlay" id="modal-contact" onclick="handleOverlayClick(event,'modal-contact')">\n  <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-title">연락하기</span>
       <button class="modal-close" onclick="closeModal('modal-contact')">✕</button>
@@ -676,8 +688,8 @@
 </div>
 
 <!-- ═══ 모달: RSVP ═══ -->
-<div class="modal-overlay" id="modal-rsvp">
-  <div class="modal-box">
+<div class="modal-overlay" id="modal-rsvp" onclick="handleOverlayClick(event,'modal-rsvp')">
+  <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-title">참석 의사 전달</span>
       <button class="modal-close" onclick="closeModal('modal-rsvp')">✕</button>
@@ -738,8 +750,8 @@
 </div>
 
 <!-- ═══ 모달: 방명록 작성 ═══ -->
-<div class="modal-overlay" id="modal-guestbook">
-  <div class="modal-box">
+<div class="modal-overlay" id="modal-guestbook" onclick="handleOverlayClick(event,'modal-guestbook')">
+  <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-title">방명록 작성</span>
       <button class="modal-close" onclick="closeModal('modal-guestbook')">✕</button>
@@ -754,8 +766,8 @@
 </div>
 
 <!-- ═══ 모달: 축하화환 ═══ -->
-<div class="modal-overlay" id="modal-flower">
-  <div class="modal-box">
+<div class="modal-overlay" id="modal-flower" onclick="handleOverlayClick(event,'modal-flower')">
+  <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-title">축하화환 보내기</span>
       <button class="modal-close" onclick="closeModal('modal-flower')">✕</button>
@@ -861,6 +873,16 @@
 </script>
 
 <script>
+  /* ── 탑으로 버튼 스크롤 감지 ── */
+  const scrollTopBtn = document.getElementById('scroll-top-btn');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollTopBtn.classList.remove('hidden');
+    } else {
+      scrollTopBtn.classList.add('hidden');
+    }
+  }, { passive: true });
+
   /* ── 페이드인 ── */
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); obs.unobserve(e.target); } });
@@ -921,12 +943,23 @@
   }
 
   /* ── 드로어 ── */
-  function openDrawer() { document.getElementById('drawer').classList.add('open'); document.getElementById('drawer-overlay').classList.add('open'); }
-  function closeDrawer() { document.getElementById('drawer').classList.remove('open'); document.getElementById('drawer-overlay').classList.remove('open'); }
+  function openDrawer() {
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawer-container').classList.add('open');
+    document.getElementById('drawer-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawer-container').classList.remove('open');
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
 
   /* ── 모달 ── */
   function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+  function handleOverlayClick(e, id) { if (e.target === e.currentTarget) closeModal(id); }
   function openContact()   { openModal('modal-contact'); }
   function openRSVP()      { openModal('modal-rsvp'); }
   function openGuestbook() { openModal('modal-guestbook'); }
@@ -988,7 +1021,33 @@
     a.download = 'wedding.ics';
     a.click();
   }
-  function shareKakao() { showToast('카카오 SDK를 연동해주세요'); }
+  /* ── 카카오 초기화 ── */
+  Kakao.init('40ca86dc246dd3654600faa0dc6f1b82');
+
+  /* ── 카카오 공유 ── */
+  function shareKakao() {
+    Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '11월 21일 조건희 ♥ 심주아 결혼합니다',
+        description: '2026년 11월 21일 토요일 오후 3시\n에스칼라디움웨딩홀',
+        imageUrl: 'https://건희와주아.store/CBK_1593.jpg', /* TODO: 실제 OG 이미지 URL */
+        link: {
+          mobileWebUrl: 'https://건희와주아.store',
+          webUrl: 'https://건희와주아.store',
+        },
+      },
+      buttons: [
+        {
+          title: '청첩장 보기',
+          link: {
+            mobileWebUrl: 'https://건희와주아.store',
+            webUrl: 'https://건희와주아.store',
+          },
+        },
+      ],
+    });
+  }
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
