@@ -1026,27 +1026,38 @@
 
   /* ── 카카오 공유 ── */
   function shareKakao() {
-    Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: '11월 21일 조건희 ♥ 심주아 결혼합니다',
-        description: '2026년 11월 21일 토요일 오후 3시\n에스칼라디움웨딩홀',
-        imageUrl: 'https://건희와주아.store/CBK_1593.jpg', /* TODO: 실제 OG 이미지 URL */
-        link: {
-          mobileWebUrl: 'https://건희와주아.store',
-          webUrl: 'https://건희와주아.store',
-        },
-      },
-      buttons: [
-        {
-          title: '청첩장 보기',
+    if (!Kakao.isInitialized()) {
+      showToast('카카오 SDK 초기화 실패');
+      return;
+    }
+    try {
+      Kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '11월 21일 조건희 ♥ 심주아 결혼합니다',
+          description: '2026년 11월 21일 토요일 오후 3시 · 에스칼라디움웨딩홀',
+          imageUrl: 'https://xn--z69ao48buva93f71z.store/CBK_1593.jpg',
           link: {
-            mobileWebUrl: 'https://건희와주아.store',
-            webUrl: 'https://건희와주아.store',
+            mobileWebUrl: 'https://xn--z69ao48buva93f71z.store',
+            webUrl: 'https://xn--z69ao48buva93f71z.store',
           },
         },
-      ],
-    });
+        buttons: [
+          {
+            title: '청첩장 보기',
+            link: {
+              mobileWebUrl: 'https://xn--z69ao48buva93f71z.store',
+              webUrl: 'https://xn--z69ao48buva93f71z.store',
+            },
+          },
+        ],
+      });
+    } catch(e) {
+      console.error('카카오 공유 오류:', e);
+      /* 실패시 링크 복사로 대체 */
+      copyLink();
+      showToast('링크가 복사되었습니다');
+    }
   }
   function showToast(msg) {
     const t = document.getElementById('toast');
