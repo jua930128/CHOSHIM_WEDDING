@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>11월 21일 조건희 ♥ 심주아 결혼합니다</title>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="11월 21일 조건희 ♥ 심주아 결혼합니다" />
+  <meta property="og:description" content="2026년 11월 21일 토요일 오후 3시 · 에스칼라디움웨딩홀" />
+  <meta property="og:url" content="https://shimjua.shop" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+KR:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg:       #fafafa;
+      --bg-warm:  #f5f0eb;
+      --text-1:   #2c2825;
+      --text-2:   #6b5e55;
+      --text-3:   #a09890;
+      --text-4:   #c8c0b8;
+      --accent:   #b27085;
+      --border:   #e8e2dc;
+      --card-bg:  #ffffff;
+      --sunday:   #f79e9e;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Gowun Dodum', sans-serif;
+      font-size: 14px;
+      line-height: 2;
+      max-width: 480px;
+      margin: 0 auto;
+      overflow-x: hidden;
+      -webkit-text-stroke: 0.02rem;
+    }
+
+    /* ─── 페이드인 ─── */
+    .fade { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .fade.show { opacity: 1; transform: translateY(0); }
+
+    /* ─── 공통 섹션 ─── */
+    section { padding: 60px 0; text-align: center; }
+    .section-eng {
+      font-family: 'Crimson Pro', serif;
+      font-size: 14px;
+      letter-spacing: 0.2rem;
+      color: var(--text-3);
+      opacity: 0.6;
+      margin-bottom: 8px;
+      -webkit-text-stroke: 0;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-1);
+      line-height: 2.8rem;
+    }
+    .section-head { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 32px; }
+
+    /* ─── 메인 히어로 ─── */
+    .hero {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 393 / 590;
+      background: #e0e0e0;
+      overflow: hidden;
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hero-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #d4c5b8 0%, #e8ddd3 100%);
+      color: var(--text-3);
+      font-size: 16px;
+      letter-spacing: 0.1em;
+    }
+    .hero-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 0 12px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .hero-script {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic;
+      font-size: clamp(32px, 10vw, 48px);
+      font-weight: 300;
+      color: white;
+      line-height: 1.1;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+      -webkit-text-stroke: 0;
+    }
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: white;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+      -webkit-text-stroke: 0;
+    }
+
+    /* ─── 인사말 ─── */
+    .greeting-text {
+      font-size: 14px;
+      line-height: 2.5;
+      color: var(--text-2);
+      padding: 0 32px;
+      word-break: keep-all;
+    }
+    .greeting-names {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 2.5;
+      margin-top: 24px;
+      padding: 0 32px;
+    }
+    .greeting-names strong { color: var(--text-1); font-weight: 400; }
+    .greeting-contact {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text-3);
+      cursor: pointer;
+    }
+
+    /* ─── 중간 사진 (풀 와이드) ─── */
+    .full-photo {
+      width: 100%;
+      overflow: hidden;
+    }
+    .full-photo img, .full-photo .ph {
+      width: 100%;
+      display: block;
+    }
+    .ph {
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #e8ddd3 0%, #d4c5b8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-4);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+    }
+    .ph.tall { aspect-ratio: 3/4; }
+    .ph.square { aspect-ratio: 1/1; }
+
+    /* ─── 인터뷰 ─── */
+    .interview-photos {
+      display: flex;
+      gap: 16px;
+      padding: 0 32px;
+      margin-bottom: 24px;
+    }
+    .interview-photos .ph {
+      flex: 1;
+      aspect-ratio: 1/1.2;
+      border-radius: 4px;
+    }
+    .interview-qa {
+      padding: 0 32px;
+      text-align: left;
+    }
+    .interview-item {
+      border-top: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    .interview-q {
+      font-size: 14px;
+      color: var(--text-1);
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+    .interview-a {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 2.2;
+      white-space: pre-line;
+    }
+
+    /* ─── 프로필 ─── */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 0 32px;
+      text-align: center;
+    }
+    .profile-label {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--text-2);
+    }
+    .profile-name {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-1);
+      margin-top: 4px;
+    }
+    .profile-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      white-space: pre-line;
+    }
+
+    /* ─── 캘린더 ─── */
+    .cal-wrap {
+      max-width: 90%;
+      width: 280px;
+      margin: 0 auto;
+    }
+    .cal-date-num {
+      font-size: 20px;
+      color: var(--text-1);
+      letter-spacing: 0.1rem;
+    }
+    .cal-date-ko {
+      font-size: 14px;
+      color: var(--text-2);
+      margin-top: 8px;
+      margin-bottom: 24px;
+    }
+    .cal-grid-wrap {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 0;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 14px;
+      line-height: 2.5;
+    }
+    .cal-grid .dh {
+      color: var(--text-1);
+      padding: 6px 0 12px;
+      font-size: 13px;
+    }
+    .cal-grid .dh.sun { color: var(--sunday); }
+    .cal-grid .dc {
+      color: var(--text-2);
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cal-grid .dc.sun { color: var(--sunday); }
+    .cal-grid .dc.dday {
+      background: var(--sunday);
+      color: white;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      margin: 0 auto;
+      font-weight: 500;
+    }
+
+    /* 카운트다운 */
+    .countdown {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      font-family: 'Crimson Pro', serif;
+      margin-top: 28px;
+    }
+    .cd-item { display: flex; flex-direction: column; align-items: center; color: var(--text-2); }
+    .cd-item .cd-label { font-size: 12px; color: var(--text-3); }
+    .cd-item .cd-num { font-size: 24px; line-height: 1.4; min-width: 28px; }
+    .cd-sep { font-size: 20px; color: var(--text-3); margin-top: 16px; }
+    .dday-text { font-size: 14px; color: var(--text-2); margin-top: 16px; line-height: 2.5; }
+    .dday-text .day { color: var(--accent); }
+
+    /* ─── 장소 ─── */
+    .venue-name { font-size: 16px; color: var(--text-1); font-weight: 400; }
+    .venue-floor { font-size: 13px; color: var(--accent); letter-spacing: 0.1em; margin-top: 4px; }
+    .venue-addr { font-size: 13px; color: var(--text-2); line-height: 1.9; margin-top: 12px; }
+    .venue-tel { font-size: 13px; color: var(--text-3); margin-top: 4px; }
+
+    .venue-map {
+      margin: 20px 32px 0;
+      aspect-ratio: 16/9;
+      background: #e8e2dc;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-4);
+      font-size: 13px;
+    }
+    .venue-photo {
+      margin: 20px 32px 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .venue-photo .ph { aspect-ratio: 16/9; border-radius: 8px; }
+
+    .map-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; padding: 0 32px; }
+    .map-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 20px; border-radius: 10px;
+      font-family: 'Gowun Dodum', sans-serif; font-size: 13px;
+      text-decoration: none; font-weight: 400; transition: opacity 0.2s;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-1);
+    }
+    .map-btn:active { opacity: 0.7; }
+
+    /* 교통편 */
+    .transport { padding: 0 32px; text-align: left; margin-top: 24px; }
+    .transport-item { margin-bottom: 16px; }
+    .transport-title { font-size: 14px; color: var(--text-1); margin-bottom: 6px; }
+    .transport-desc { font-size: 13px; color: var(--text-2); line-height: 2.2; }
+
+    /* ─── 안내사항 ─── */
+    .notice-cards {
+      display: flex;
+      gap: 32px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0 32px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .notice-card {
+      min-width: 260px;
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .notice-card .nc-img {
+      width: 100%;
+      height: 80px;
+      border-radius: 20px 20px 0 20px;
+      object-fit: cover;
+      background: var(--bg-warm);
+    }
+    .notice-card .nc-title { font-size: 16px; color: var(--text-1); }
+    .notice-card .nc-desc { font-size: 14px; color: var(--text-2); line-height: 2.2; text-align: center; }
+
+    /* ─── 갤러리 ─── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 0 20px;
+    }
+    .gallery-grid .ph { aspect-ratio: 10/13; border-radius: 4px; }
+    .gallery-more {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--text-2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    /* ─── 방명록 ─── */
+    .gb-list { padding: 0 32px; text-align: left; }
+    .gb-item {
+      border-top: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    .gb-writer { font-size: 14px; color: var(--text-1); }
+    .gb-date { font-size: 12px; color: var(--text-4); margin-left: 8px; }
+    .gb-msg { font-size: 13px; color: var(--text-2); line-height: 2; margin-top: 8px; }
+    .gb-btn {
+      margin-top: 20px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-1);
+      font-family: 'Gowun Dodum', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ─── RSVP ─── */
+    .rsvp-desc { font-size: 14px; color: var(--text-2); line-height: 2.2; padding: 0 32px; }
+    .rsvp-btn {
+      margin-top: 20px;
+      padding: 14px 32px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-1);
+      font-family: 'Gowun Dodum', sans-serif;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ─── 계좌 ─── */
+    .account-desc { font-size: 14px; color: var(--text-2); line-height: 2.2; padding: 0 32px; white-space: pre-line; }
+    .account-group { margin-top: 24px; padding: 0 32px; }
+    .account-group-title {
+      font-size: 14px; color: var(--text-1); padding: 12px 0;
+      border-top: 1px solid var(--border);
+      cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .account-group-title .arrow { font-size: 12px; color: var(--text-3); transition: transform 0.3s; }
+    .account-group-title .arrow.open { transform: rotate(180deg); }
+    .account-list { display: none; padding-bottom: 8px; }
+    .account-list.open { display: block; }
+    .account-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; font-size: 13px;
+    }
+    .account-item .ai-info { color: var(--text-2); }
+    .account-item .ai-name { color: var(--text-1); font-size: 14px; }
+    .copy-btn {
+      font-size: 12px; color: var(--text-2); background: var(--bg);
+      border: 1px solid var(--border); border-radius: 16px;
+      padding: 4px 12px; cursor: pointer; font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    /* ─── 엔딩 ─── */
+    .ending { position: relative; overflow: hidden; }
+    .ending .ph { aspect-ratio: 4/5; }
+    .ending-text {
+      position: absolute;
+      bottom: 40px; left: 0; width: 100%;
+      text-align: center;
+      font-size: 15px;
+      color: white;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── 카카오 공유 + 푸터 ─── */
+    .share-section { padding: 20px 0; text-align: center; }
+    .share-kakao {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--text-1); cursor: pointer;
+      padding: 8px 16px;
+    }
+    footer {
+      padding: 20px 0 40px; text-align: center;
+      font-size: 10px; color: var(--text-4); letter-spacing: -0.01em;
+    }
+
+    /* 토스트 */
+    .toast {
+      position: fixed; bottom: 40px; left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--text-1); color: white;
+      font-size: 12px; padding: 10px 20px; border-radius: 24px;
+      opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ═══ 1. 메인 히어로 ═══ -->
+<div class="hero">
+  <img class="hero-img" src="CBK_1593.jpg" alt="" />
+  <div class="hero-overlay">
+    <div class="hero-script">Getting<br/>Married</div>
+    <div class="hero-bottom">
+      <span>21ST</span>
+      <span>NOV</span>
+      <span>2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 2. 인사말 ═══ -->
+<section>
+  <div class="section-head fade">
+    <div class="section-eng">INVITATION</div>
+    <div class="section-title">소중한 분들을 초대합니다</div>
+  </div>
+  <p class="greeting-text fade">
+    서로가 서로의 곁에 있어<br/>
+    더 빛나는 두 사람이<br/>
+    평생을 함께하는 날을<br/>
+    소중한 분들과 나누고자 합니다.<br/>
+    <br/>
+    바쁘신 중에도 오셔서<br/>
+    축복해 주시면<br/>
+    더없는 기쁨이 되겠습니다.
+  </p>
+  <div class="greeting-names fade">
+    <!-- TODO: 실제 부모님 성함으로 교체 -->
+    조성욱· 장석란 의 아들 <strong>건희</strong><br/>
+    심재선 · 최병희 의 딸 <strong>주아</strong>
+  </div>
+  <div class="greeting-contact fade">📞 연락하기</div>
+</section>
+
+<!-- ═══ 3. 중간 사진 1 ═══ -->
+<div class="full-photo fade">
+  <!-- TODO: 사진 교체 -->
+  <div class="ph">중간 사진 1</div>
+</div>
+
+<!-- ═══ 4. 인터뷰 ═══ -->
+<section>
+  <div class="section-head fade">
+    <div class="section-eng">INTERVIEW</div>
+    <div class="section-title">우리 두 사람의 이야기</div>
+  </div>
+  <div class="interview-photos fade">
+    <div class="ph square">신랑 사진</div>
+    <div class="ph square">신부 사진</div>
+  </div>
+  <div class="interview-qa fade">
+    <div class="interview-item">
+      <div class="interview-q">Q1. 신랑 신부를 소개해주세요</div>
+      <div class="interview-a"><!-- TODO: 내용 입력 -->
+소개 내용을 입력해주세요.</div>
+    </div>
+    <div class="interview-item">
+      <div class="interview-q">Q2. 두 분은 어떻게 만나게 되었나요?</div>
+      <div class="interview-a"><!-- TODO: 내용 입력 -->
+만남 이야기를 입력해주세요.</div>
+    </div>
+    <div class="interview-item">
+      <div class="interview-q">Q3. 결혼을 결심하게 된 계기는요?</div>
+      <div class="interview-a"><!-- TODO: 내용 입력 -->
+결혼 결심 이야기를 입력해주세요.</div>
+    </div>
+    <div class="interview-item">
+      <div class="interview-q">Q4. 앞으로의 결혼 생활에 대한 다짐은요?</div>
+      <div class="interview-a"><!-- TODO: 내용 입력 -->
+결혼 다짐을 입력해주세요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5. 프로필 ═══ -->
+<section>
+  <div class="section-head fade">
+    <div class="section-eng">PROFILE</div>
+    <div class="section-title">두 사람을 소개합니다</div>
+  </div>
+  <div class="profile-grid fade">
+    <div>
+      <div class="profile-label">신랑</div>
+      <div class="profile-name">조건희</div>
+      <div class="profile-desc"><!-- TODO: 프로필 입력 -->
+#ESTJ #개발자
+
+든든한 남편이 되겠습니다</div>
+    </div>
+    <div>
+      <div class="profile-label">신부</div>
+      <div class="profile-name">심주아</div>
+      <div class="profile-desc"><!-- TODO: 프로필 입력 -->
+#ISFP #개발자
+
+따뜻한 아내가 되겠습니다</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 6. 중간 사진 2 ═══ -->
+<div class="full-photo fade">
+  <div class="ph">중간 사진 2</div>
+</div>
+
+<!-- ═══ 7. 캘린더 + 카운트다운 ═══ -->
+<section>
+  <div class="cal-wrap fade">
+    <div class="cal-date-num">2026.11.21</div>
+    <div class="cal-date-ko">토요일 오후 3시</div>
+
+    <div class="cal-grid-wrap">
+      <div class="cal-grid">
+        <div class="dh sun">일</div><div class="dh">월</div><div class="dh">화</div><div class="dh">수</div><div class="dh">목</div><div class="dh">금</div><div class="dh">토</div>
+        <!-- 11월 2026: 1일 = 일요일 -->
+        <div class="dc sun">1</div><div class="dc">2</div><div class="dc">3</div><div class="dc">4</div><div class="dc">5</div><div class="dc">6</div><div class="dc">7</div>
+        <div class="dc sun">8</div><div class="dc">9</div><div class="dc">10</div><div class="dc">11</div><div class="dc">12</div><div class="dc">13</div><div class="dc">14</div>
+        <div class="dc sun">15</div><div class="dc">16</div><div class="dc">17</div><div class="dc">18</div><div class="dc">19</div><div class="dc">20</div><div class="dc dday">21</div>
+        <div class="dc sun">22</div><div class="dc">23</div><div class="dc">24</div><div class="dc">25</div><div class="dc">26</div><div class="dc">27</div><div class="dc">28</div>
+        <div class="dc sun">29</div><div class="dc">30</div><div class="dc"></div><div class="dc"></div><div class="dc"></div><div class="dc"></div><div class="dc"></div>
+      </div>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-item"><span class="cd-label">DAYS</span><span class="cd-num" id="cd-d">--</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-item"><span class="cd-label">HOUR</span><span class="cd-num" id="cd-h">--</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-item"><span class="cd-label">MIN</span><span class="cd-num" id="cd-m">--</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-item"><span class="cd-label">SEC</span><span class="cd-num" id="cd-s">--</span></div>
+    </div>
+
+    <div class="dday-text" id="dday-text"></div>
+  </div>
+</section>
+
+<!-- ═══ 8. 오시는 길 ═══ -->
+<section>
+  <div class="section-head fade">
+    <div class="section-eng">LOCATION</div>
+    <div class="section-title">오시는 길</div>
+  </div>
+  <div class="fade">
+    <div class="venue-name">에스칼라디움웨딩홀</div>
+    <div class="venue-floor">대덕리치아노 롯데마트 건물, 3층</div>
+    <div class="venue-addr">
+      인천 부평구 길주로 623<br/>
+      <span style="color:var(--text-3)">우) 21344</span>
+    </div>
+    <div class="venue-tel">Tel. 032-503-1555</div>
+  </div>
+
+  <div class="venue-map fade">지도 영역 (네이버맵 삽입 가능)</div>
+  <div class="venue-photo fade"><div class="ph">예식장 사진</div></div>
+
+  <div class="map-buttons fade">
+    <a class="map-btn" href="https://kko.to/-0zgsaJgcV" target="_blank" rel="noopener">
+      🗺️ 카카오맵으로 보기
+    </a>
+    <a class="map-btn" href="https://naver.me/GSDA4lu9" target="_blank" rel="noopener">
+      🗺️ 네이버지도로 보기
+    </a>
+    <a class="map-btn" href="https://tmap.life/e9d67420" target="_blank" rel="noopener">
+      🗺️ 티맵으로 보기
+    </a>
+  </div>
+
+  <!-- 교통편 -->
+  <div class="transport fade">
+    <div class="transport-item">
+      <div class="transport-title">🚇 지하철 이용시</div>
+      <div class="transport-desc">• 굴포천역(7호선) 7,8번출구 ➡️ 웨딩홀과 바로연결
+• 부평구청역(인천 1호선) ➡️ 7호선 환승 굴포천역 하차</div>
+    </div>
+    <div class="transport-item">
+      <div class="transport-title">🚌 버스 이용시</div>
+      <div class="transport-desc">• 욱일아파트 앞 / 신복사거리
+  일반 : 67-1, 87, 24-1(롯데마트 앞)
+  광역 : 9300 / 좌석 : 9740
+• 부평농협 앞
+  광역 : 1200, 9800 / 일반 : 10, 35, 67-1
+• 부평구청 앞
+  광역 : 1200, 9800 / 일반 : 35
+  좌석 : 3003(구간요금) / 직행 : 780</div>
+    </div>
+    <div class="transport-item">
+      <div class="transport-title">🚗 네비게이션 검색어</div>
+      <div class="transport-desc">• "인천광역시 부평구 길주로 623"
+• "032-503-1555"
+• "인천광역시 부평구 삼산동 465-1"</div>
+    </div>
+    <div class="transport-item">
+      <div class="transport-title">🅿️ 주차장</div>
+      <div class="transport-desc">• 대덕리치아노 롯데마트 3층 (지하주차장 주차)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 9. 안내사항 ═══ -->
+<section>
+  <div class="section-head fade">
+    <div class="section-eng">INFORMATION</div>
+    <div class="section-title">예식정보 및 안내사항</div>
+  </div>
+  <div class="notice-cards fade">
+    <div class="notice-card">
+      <div class="nc-img ph" style="aspect-ratio:auto;height:80px;">포토부스</div>
+      <div class="nc-title">포토부스 이용안내</div>
+      <div class="nc-desc">
+        포토부스가 설치될 예정입니다.<br/>
+        환한 미소와 따뜻한 말씀 남겨주시면<br/>
+        소중히 간직하도록 하겠습니다.
+      </div>
+    </div>
+    <div class="notice-card">
+      <div class="nc-img ph" style="aspect-ratio:auto;height:80px;">식사</div>
+      <div class="nc-title">식사 안내</div>
+      <div class="nc-desc">
+        <!-- TODO: 식사 안내 입력 -->
+        식사 관련 안내를 입력해주세요.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 10. 갤러리 ═══ -->
+<section>
+  <div class="section-head fade">
+    <div class="section-eng">GALLERY</div>
+    <div class="section-title">웨딩 갤러리</div>
+  </div>
+  <div class="gallery-grid fade">
+    <!-- TODO: 실제 사진 교체 -->
+    <div class="ph tall">사진 1</div>
+    <div class="ph tall">사진 2</div>
+    <div class="ph tall">사진 3</div>
+    <div class="ph tall">사진 4</div>
+    <div class="ph tall">사진 5</div>
+    <div class="ph tall">사진 6</div>
+  </div>
+  <div class="gallery-more fade">더보기 ▾</div>
+</section>
+
+<!-- ═══ 11. 중간 사진 3 ═══ -->
+<div class="full-photo fade">
+  <div class="ph">중간 사진 3</div>
+</div>
+
+<!-- ═══ 12. 방명록 ═══ -->
+<section>
+  <div class="section-head fade">
+    <div class="section-eng">GUESTBOOK</div>
+    <div class="section-title">방명록</div>
+  </div>
+  <div class="gb-list fade">
+    <div class="gb-item">
+      <span class="gb-writer">축하메시지</span>
+      <span class="gb-date">방명록은 예시입니다</span>
+      <div class="gb-msg">결혼을 진심으로 축하드립니다! 행복하세요 🎊</div>
+    </div>
+  </div>
+  <button class="gb-btn fade">방명록 작성하기</button>
+</section>
+
+<!-- ═══ 13. 참석의사 전달 ═══ -->
+<section style="background: var(--bg-warm);">
+  <div class="section-head fade">
+    <div class="section-eng">RSVP</div>
+    <div class="section-title">참석 의사 전달</div>
+  </div>
+  <p class="rsvp-desc fade">
+    신랑, 신부에게 참석의사를<br/>
+    미리 전달할 수 있어요.
+  </p>
+  <button class="rsvp-btn fade">🎊 참석의사 전달하기</button>
+</section>
+
+<!-- ═══ 14. 마음 전하기 (계좌) ═══ -->
+<section>
+  <div class="section-head fade">
+    <div class="section-eng">GIFT</div>
+    <div class="section-title">마음 전하실 곳</div>
+  </div>
+  <p class="account-desc fade">참석이 어려우신 분들을 위해
+계좌번호를 기재하였습니다.
+너그러운 마음으로 양해 부탁드립니다.</p>
+
+  <!-- 신랑측 -->
+  <div class="account-group fade">
+    <div class="account-group-title" onclick="toggleAccount(this)">
+      <span>신랑측</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="account-list">
+      <div class="account-item">
+        <div>
+          <div class="ai-name">조건희</div>
+          <!-- TODO: 실제 계좌 입력 -->
+          <div class="ai-info">은행명 · 000-0000-000000</div>
+        </div>
+        <button class="copy-btn" onclick="copyText('000-0000-000000')">복사</button>
+      </div>
+      <div class="account-item">
+        <div>
+          <!-- TODO: 부모님 계좌 입력 -->
+          <div class="ai-name">아버지</div>
+          <div class="ai-info">은행명 · 000-0000-000000</div>
+        </div>
+        <button class="copy-btn" onclick="copyText('000-0000-000000')">복사</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 신부측 -->
+  <div class="account-group fade">
+    <div class="account-group-title" onclick="toggleAccount(this)">
+      <span>신부측</span>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="account-list">
+      <div class="account-item">
+        <div>
+          <div class="ai-name">심주아</div>
+          <!-- TODO: 실제 계좌 입력 -->
+          <div class="ai-info">은행명 · 000-0000-000000</div>
+        </div>
+        <button class="copy-btn" onclick="copyText('000-0000-000000')">복사</button>
+      </div>
+      <div class="account-item">
+        <div>
+          <!-- TODO: 부모님 계좌 입력 -->
+          <div class="ai-name">아버지</div>
+          <div class="ai-info">은행명 · 000-0000-000000</div>
+        </div>
+        <button class="copy-btn" onclick="copyText('000-0000-000000')">복사</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 15. 엔딩 사진 ═══ -->
+<div class="ending fade">
+  <!-- TODO: 엔딩 사진 교체 -->
+  <div class="ph tall" style="aspect-ratio:4/5;">엔딩 사진</div>
+  <div class="ending-text">잘 살겠습니다.</div>
+</div>
+
+<!-- ═══ 16. 카카오 공유 + 푸터 ═══ -->
+<div class="share-section">
+  <span class="share-kakao">💬 카카오톡으로 공유하기</span>
+</div>
+<footer>
+  <p>조건희 · 심주아</p>
+  <p>2026.11.21</p>
+</footer>
+
+<!-- 토스트 -->
+<div class="toast" id="toast">복사되었습니다</div>
+
+<script>
+  /* ── 스크롤 페이드인 ── */
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+  /* ── 카운트다운 ── */
+  function updateCD() {
+    const target = new Date('2026-11-21T15:00:00+09:00');
+    const now = new Date();
+    let diff = target - now;
+
+    // D-Day 텍스트
+    const startOfTarget = new Date('2026-11-21T00:00:00+09:00');
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const dDays = Math.ceil((startOfTarget - startOfToday) / 86400000);
+    const ddayEl = document.getElementById('dday-text');
+
+    if (dDays === 0) {
+      ddayEl.innerHTML = '주아, 건희의 결혼식이 <span class="day">오늘</span>입니다.';
+    } else if (dDays > 0) {
+      ddayEl.innerHTML = `주아, 건희의 결혼식이 <span class="day">${dDays}</span>일 남았습니다.`;
+    } else {
+      ddayEl.innerHTML = `주아, 건희의 결혼식이 ${Math.abs(dDays)}일 지났습니다.`;
+    }
+
+    if (diff <= 0) diff = 0;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  }
+  updateCD(); setInterval(updateCD, 1000);
+
+  /* ── 계좌 토글 ── */
+  function toggleAccount(el) {
+    const list = el.nextElementSibling;
+    const arrow = el.querySelector('.arrow');
+    list.classList.toggle('open');
+    arrow.classList.toggle('open');
+  }
+
+  /* ── 복사 ── */
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
