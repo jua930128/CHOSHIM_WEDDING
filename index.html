@@ -166,14 +166,19 @@
 
     /* ── 갤러리 스와이퍼 ── */
     .swiper-wrap { position: relative; overflow: hidden; width: 100%; }
-    .swiper-track { display: flex; transition: transform .35s ease; }
+    .swiper-track { display: flex; transition: transform .5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     .swiper-page { min-width: 100%; flex-shrink: 0; display: flex; gap: 6px; padding: 0 6px; }
-    .swiper-page img, .swiper-page .ph { flex: 1; object-fit: cover; border-radius: 4px; display: block; min-width: 0; }
-    .swiper-page:has(img:nth-child(2)) img, .swiper-page:has(.ph:nth-child(2)) .ph { aspect-ratio: 2/3; }
-    .swiper-page:has(img:only-child) img, .swiper-page:has(.ph:only-child) .ph { aspect-ratio: 3/2; }
+    .swiper-page img, .swiper-page .ph { flex: 1; object-fit: cover; object-position: center; border-radius: 4px; display: block; min-width: 0; width: 0; }
+    .swiper-page:has(img:nth-child(2)) img, .swiper-page:has(.ph:nth-child(2)) .ph { aspect-ratio: 2/3; height: auto; }
+    .swiper-page:has(img:only-child) img, .swiper-page:has(.ph:only-child) .ph { aspect-ratio: 3/2; height: auto; }
     .swiper-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
     .swiper-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all .2s; }
     .swiper-dot.active { background: var(--text-2); width: 16px; border-radius: 3px; }
+    /* 썸네일 스트립 */
+    .swiper-thumbs { display: flex; gap: 6px; padding: 10px 6px 0; overflow-x: auto; scrollbar-width: none; }
+    .swiper-thumbs::-webkit-scrollbar { display: none; }
+    .swiper-thumb { width: 48px; height: 48px; flex-shrink: 0; border-radius: 4px; object-fit: cover; cursor: pointer; opacity: 0.5; transition: opacity .2s; border: 2px solid transparent; }
+    .swiper-thumb.active { opacity: 1; border-color: var(--text-1); }
     .swiper-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,.85); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; z-index: 10; font-size: 18px; color: var(--text-1); box-shadow: 0 2px 8px rgba(0,0,0,.1); display: flex; align-items: center; justify-content: center; }
     .swiper-btn.prev { left: 8px; }
     .swiper-btn.next { right: 8px; }
@@ -296,29 +301,30 @@
 <!-- ═══ ⋯ 드로어 메뉴 ═══ -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="drawer-container" id="drawer-container">
-<div class="drawer" id="drawer">
-  <button class="drawer-close" onclick="closeDrawer()">✕</button>
-  <div style="height:48px;"></div>
+  <div class="drawer" id="drawer">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <div style="height:48px;"></div>
 
-  <div class="drawer-section">빠른 메뉴</div>
-  <button class="drawer-item" onclick="openRSVP();closeDrawer()"><span class="di-icon">👤</span>참석의사 전달하기</button>
-  <button class="drawer-item" onclick="closeDrawer()"><span class="di-icon">📷</span>축하 사진 공유하기</button>
-  <button class="drawer-item" onclick="openFlower();closeDrawer()"><span class="di-icon">💐</span>축하화환 보내기</button>
+    <div class="drawer-section">빠른 메뉴</div>
+    <button class="drawer-item" onclick="openRSVP();closeDrawer()"><span class="di-icon">👤</span>참석의사 전달하기</button>
+    <!-- <button class="drawer-item" onclick="closeDrawer()"><span class="di-icon">📷</span>축하 사진 공유하기</button> -->
+    <button class="drawer-item" onclick="openFlower();closeDrawer()"><span class="di-icon">💐</span>축하화환 보내기</button>
 
-  <div class="drawer-divider"></div>
-  <div class="drawer-section">목차</div>
-  <a class="drawer-nav-item" href="#sec-invite" onclick="closeDrawer()">인사말</a>
-  <a class="drawer-nav-item" href="#sec-interview" onclick="closeDrawer()">인터뷰</a>
-  <a class="drawer-nav-item" href="#sec-profile" onclick="closeDrawer()">신랑/신부 프로필</a>
-  <a class="drawer-nav-item" href="#sec-calendar" onclick="closeDrawer()">달력, 디데이</a>
-  <a class="drawer-nav-item" href="#sec-location" onclick="closeDrawer()">오시는 길, 교통수단</a>
-  <a class="drawer-nav-item" href="#sec-info" onclick="closeDrawer()">예식정보 및 안내사항</a>
-  <a class="drawer-nav-item" href="#sec-gallery" onclick="closeDrawer()">갤러리</a>
-  <a class="drawer-nav-item" href="#sec-guestbook" onclick="closeDrawer()">방명록</a>
-  <a class="drawer-nav-item" href="#sec-rsvp" onclick="closeDrawer()">참석의사</a>
-  <a class="drawer-nav-item" href="#sec-account" onclick="closeDrawer()">마음전하실 곳</a>
-  <a class="drawer-nav-item" href="#sec-photo-share" onclick="closeDrawer()">축하 사진 공유</a>
-</div>
+    <div class="drawer-divider"></div>
+    <div class="drawer-section">목차</div>
+    <a class="drawer-nav-item" href="#sec-invite" onclick="closeDrawer()">인사말</a>
+    <a class="drawer-nav-item" href="#sec-interview" onclick="closeDrawer()">인터뷰</a>
+    <a class="drawer-nav-item" href="#sec-profile" onclick="closeDrawer()">신랑/신부 프로필</a>
+    <a class="drawer-nav-item" href="#sec-calendar" onclick="closeDrawer()">달력, 디데이</a>
+    <a class="drawer-nav-item" href="#sec-location" onclick="closeDrawer()">오시는 길, 교통수단</a>
+    <a class="drawer-nav-item" href="#sec-info" onclick="closeDrawer()">예식정보 및 안내사항</a>
+    <a class="drawer-nav-item" href="#sec-gallery" onclick="closeDrawer()">갤러리</a>
+    <a class="drawer-nav-item" href="#sec-guestbook" onclick="closeDrawer()">방명록</a>
+    <a class="drawer-nav-item" href="#sec-rsvp" onclick="closeDrawer()">참석의사</a>
+    <a class="drawer-nav-item" href="#sec-account" onclick="closeDrawer()">마음전하실 곳</a>
+    <!-- <a class="drawer-nav-item" href="#sec-photo-share" onclick="closeDrawer()">축하 사진 공유</a> -->
+    <a class="drawer-nav-item" href="#sec-photo-share" onclick="closeDrawer()">축하화환 선물</a>
+  </div>
 </div>
 
 <!-- ═══ 1. 메인 히어로 ═══ -->
@@ -391,14 +397,14 @@
     <div>
       <div class="profile-label">신랑</div>
       <div class="profile-name">조건희</div>
-      <div class="profile-desc">#MBTI #직업
+      <div class="profile-desc">#ESTJ #개발자
 
 든든한 남편이 되겠습니다</div>
     </div>
     <div>
       <div class="profile-label">신부</div>
       <div class="profile-name">심주아</div>
-      <div class="profile-desc">#MBTI #직업
+      <div class="profile-desc">#ISFP #개발자
 
 따뜻한 아내가 되겠습니다</div>
     </div>
@@ -511,14 +517,49 @@
   </div>
   <div class="swiper-wrap fade" id="gallery-main">
     <div class="swiper-track" id="track-main">
-      <div class="swiper-page"><div class="ph tall">세로 1</div><div class="ph tall">세로 2</div></div>
-      <div class="swiper-page"><div class="ph tall">세로 3</div><div class="ph tall">세로 4</div></div>
-      <div class="swiper-page"><div class="ph">가로 1</div></div>
-      <div class="swiper-page"><div class="ph">가로 2</div></div>
+      <!-- 세로 -->
+      <div class="swiper-page"><img src="s1.jpg" alt="Gallery Image 1" /><img src="s2.jpg" alt="Gallery Image 2" /></div>
+      <div class="swiper-page"><img src="s3.jpg" alt="Gallery Image 3" /><img src="s4.jpg" alt="Gallery Image 4" /></div>
+      <div class="swiper-page"><img src="s5.jpg" alt="Gallery Image 3" /><img src="s6.jpg" alt="Gallery Image 4" /></div>
+      <div class="swiper-page"><img src="s7.jpg" alt="Gallery Image 3" /><img src="s8.jpg" alt="Gallery Image 4" /></div>
+      <div class="swiper-page"><img src="s9.jpg" alt="Gallery Image 3" /><img src="s10.jpg" alt="Gallery Image 4" /></div>
+      <div class="swiper-page"><img src="s11.jpg" alt="Gallery Image 3" /><img src="s12.jpg" alt="Gallery Image 4" /></div>
+      <div class="swiper-page"><img src="s13.jpg" alt="Gallery Image 3" /><img src="s14.jpg" alt="Gallery Image 4" /></div>
+      <div class="swiper-page"><img src="s15.jpg" alt="Gallery Image 3" /><img src="s16.jpg" alt="Gallery Image 4" /></div>
+      <div class="swiper-page"><img src="s17.jpg" alt="Gallery Image 3" /><img src="s18.jpg" alt="Gallery Image 4" /></div>
+      <!-- 가로 -->
+      <div class="swiper-page"><img src="g1.jpg" alt="Gallery Image 11" /></div>
+      <div class="swiper-page"><img src="g2.jpg" alt="Gallery Image 12" /></div>
+      <div class="swiper-page"><img src="g3.jpg" alt="Gallery Image 13" /></div>
+      <div class="swiper-page"><img src="g4.jpg" alt="Gallery Image 14" /></div>
+      <div class="swiper-page"><img src="g5.jpg" alt="Gallery Image 15" /></div>
+      <div class="swiper-page"><img src="g6.jpg" alt="Gallery Image 16" /></div>
+      <div class="swiper-page"><img src="g7.jpg" alt="Gallery Image 17" /></div>
     </div>
-    <button class="swiper-btn prev" onclick="slideGal(-1)">‹</button>
-    <button class="swiper-btn next" onclick="slideGal(1)">›</button>
+    <button class="swiper-btn prev" onclick="slideGal(-1);resetAutoSlide()">‹</button>
+    <button class="swiper-btn next" onclick="slideGal(1);resetAutoSlide()">›</button>
     <div class="swiper-dots" id="dots-main"></div>
+    <!-- 썸네일 스트립 -->
+    <div class="swiper-thumbs" id="thumbs-main">
+      <!-- 세로 사진 썸네일 (페이지당 첫번째 이미지) -->
+      <img class="swiper-thumb active" src="s1.jpg" onclick="goToSlide(0)" />
+      <img class="swiper-thumb" src="s3.jpg" onclick="goToSlide(1)" />
+      <img class="swiper-thumb" src="s5.jpg" onclick="goToSlide(2)" />
+      <img class="swiper-thumb" src="s7.jpg" onclick="goToSlide(3)" />
+      <img class="swiper-thumb" src="s9.jpg" onclick="goToSlide(4)" />
+      <img class="swiper-thumb" src="s11.jpg" onclick="goToSlide(5)" />
+      <img class="swiper-thumb" src="s13.jpg" onclick="goToSlide(6)" />
+      <img class="swiper-thumb" src="s15.jpg" onclick="goToSlide(7)" />
+      <img class="swiper-thumb" src="s17.jpg" onclick="goToSlide(8)" />
+      <!-- 가로 사진 썸네일 -->
+      <img class="swiper-thumb" src="g1.jpg" onclick="goToSlide(9)" />
+      <img class="swiper-thumb" src="g2.jpg" onclick="goToSlide(10)" />
+      <img class="swiper-thumb" src="g3.jpg" onclick="goToSlide(11)" />
+      <img class="swiper-thumb" src="g4.jpg" onclick="goToSlide(12)" />
+      <img class="swiper-thumb" src="g5.jpg" onclick="goToSlide(13)" />
+      <img class="swiper-thumb" src="g6.jpg" onclick="goToSlide(14)" />
+      <img class="swiper-thumb" src="g7.jpg" onclick="goToSlide(15)" />
+    </div>
   </div>
 </section>
 
@@ -605,13 +646,21 @@
   </div>
 </section>
 
-<!-- ═══ 15. 축하 사진 공유 ═══ -->
-<div class="photo-share fade" id="sec-photo-share">
+<!-- ═══ 15-1. 축하 사진 공유 ═══ -->
+<!-- <div class="photo-share fade" id="sec-photo-share">
   <div class="photo-share-icon">📸</div>
   <div class="photo-share-title">축하 사진 공유</div>
   <p class="photo-share-desc">신랑신부의 행복한 순간을 담아주세요.<br/>예식 당일, 아래 버튼을 통해 사진을 올려주세요.<br/>많은 참여 부탁드려요!</p>
   <button class="photo-share-btn">사진 업로드</button>
   <div class="photo-share-date">2026-11-21 예식 당일부터 업로드 가능합니다.</div>
+</div> -->
+
+<!-- ═══ 15-2. 화환 선물하기 ═══ -->
+<div class="photo-share fade" id="sec-photo-share">
+  <div class="photo-share-icon">💐</div>
+  <div class="photo-share-title">축하화환 선물</div>
+  <p class="photo-share-desc">신랑신부의 결혼을 축하해주세요.<br/>예식일에 맞춰 웨딩홀로 배송됩니다.<br/>감사한 마음으로 소중히 받겠습니다.</p>
+  <button class="photo-share-btn" onclick="openFlower()">💐 화환 보내기</button>
 </div>
 
 <!-- ═══ 16. 엔딩 ═══ -->
@@ -651,7 +700,7 @@
     </div>
     <div class="contact-row">
       <span class="contact-role">아버지</span>
-      <span class="contact-name"><!-- TODO -->성함</span>
+      <span class="contact-name"><!-- TODO -->조성욱</span>
       <div class="contact-btns">
         <button class="contact-btn" onclick="call('010-0000-0000')">📞</button>
         <button class="contact-btn" onclick="sms('010-0000-0000')">✉️</button>
@@ -659,7 +708,7 @@
     </div>
     <div class="contact-row">
       <span class="contact-role">어머니</span>
-      <span class="contact-name"><!-- TODO -->성함</span>
+      <span class="contact-name"><!-- TODO -->장석란</span>
       <div class="contact-btns">
         <button class="contact-btn" onclick="call('010-0000-0000')">📞</button>
         <button class="contact-btn" onclick="sms('010-0000-0000')">✉️</button>
@@ -676,7 +725,7 @@
     </div>
     <div class="contact-row">
       <span class="contact-role">아버지</span>
-      <span class="contact-name"><!-- TODO -->성함</span>
+      <span class="contact-name"><!-- TODO -->심재선</span>
       <div class="contact-btns">
         <button class="contact-btn" onclick="call('010-0000-0000')">📞</button>
         <button class="contact-btn" onclick="sms('010-0000-0000')">✉️</button>
@@ -684,7 +733,7 @@
     </div>
     <div class="contact-row">
       <span class="contact-role">어머니</span>
-      <span class="contact-name"><!-- TODO -->성함</span>
+      <span class="contact-name"><!-- TODO -->최병희</span>
       <div class="contact-btns">
         <button class="contact-btn" onclick="call('010-0000-0000')">📞</button>
         <button class="contact-btn" onclick="sms('010-0000-0000')">✉️</button>
@@ -829,20 +878,65 @@
         const date = d.createdAt?.toDate?.().toLocaleDateString('ko') || '';
         list.innerHTML += `
           <div class="gb-item">
-            <span class="gb-writer">${d.writer}</span>
+            <span class="gb-writer">${sanitize(d.writer)}</span>
             <span class="gb-date">${date}</span>
-            <div class="gb-msg">${d.message}</div>
+            <div class="gb-msg">${sanitize(d.message)}</div>
           </div>`;
       });
     } catch(e) { console.error(e); }
   }
-  loadGuestbook();
 
   /* ── 방명록 제출 ── */
+  // XSS 방지: HTML 태그 제거
+  function sanitize(str) {
+    return str.replace(/[<>&"'`]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;','`':'&#96;'}[c]));
+  }
+
+  loadGuestbook();
+
+  // 욕설 필터
+  const BAD_WORDS = [
+    // 한국어 욕설
+    '씨발','시발','ㅅㅂ','씨바','시바','씨팔','시팔',
+    '병신','ㅂㅅ','븅신','벙신',
+    '개새끼','개색끼','개세끼','개놈','개년','개같','개소리',
+    '지랄','ㅈㄹ','지럴',
+    '좆','ㅈ같','존나','ㅈㄴ','조낙','죠낙',
+    '보지','보짓','보지같',
+    '창녀','창년','창놈',
+    '미친','ㅁㅊ','미친놈','미친년','미친새끼',
+    '새끼','쉐끼','쉑기','섀끼',
+    '닥쳐','꺼져','뒤져','뒤지','뒤짐',
+    '찐따','찐빠','정신병','정신지체',
+    '느금마','니애미','니에미','느그엄마',
+    '후레자식','후레새끼',
+    '쓰레기','찌질','찌질이',
+    '걸레','갈보','화냥',
+    '돼지','돼지새끼',
+    '꺼져라','뒤져라','죽어라','죽여',
+    // 영어 욕설
+    'fuck','f**k','fucker','fucking','fck',
+    'shit','sh1t','s**t',
+    'bitch','b**ch','btch',
+    'asshole','ass','a**',
+    'bastard','dick','cock','pussy','cunt',
+    'damn','hell','crap',
+    'motherfucker','nigger','nigga',
+    'whore','slut',
+    // 혐오/차별 표현
+    '장애인','애미','애비','어미','에미',
+  ];
+  function hasBadWord(str) {
+    return BAD_WORDS.some(w => str.toLowerCase().includes(w));
+  }
+
   window.submitGuestbook = async function() {
-    const writer = document.getElementById('gb-writer').value.trim();
-    const msg    = document.getElementById('gb-msg').value.trim();
+    const writer = sanitize(document.getElementById('gb-writer').value.trim());
+    const msg    = sanitize(document.getElementById('gb-msg').value.trim());
     if (!writer || !msg) { showToast('이름과 내용을 입력해주세요'); return; }
+    if (hasBadWord(writer) || hasBadWord(msg)) { showToast('부적절한 내용이 포함되어 있습니다'); return; }
+    if (writer.length > 10) { showToast('이름은 10자 이내로 입력해주세요'); return; }
+    if (msg.length > 100) { showToast('내용은 100자 이내로 입력해주세요'); return; }
     try {
       await addDoc(collection(db, 'guestbook'), {
         writer, message: msg, createdAt: serverTimestamp()
@@ -927,16 +1021,49 @@
       el.appendChild(d);
     }
   }
-  function slideGal(dir) {
-    const n = document.querySelectorAll('#track-main .swiper-page').length;
-    galIdx = Math.max(0, Math.min(galIdx + dir, n - 1));
+  function updateGallery() {
     document.getElementById('track-main').style.transform = `translateX(-${galIdx*100}%)`;
     document.querySelectorAll('#dots-main .swiper-dot').forEach((d,i) => d.classList.toggle('active', i === galIdx));
+    /* 썸네일 활성화 + 스크롤 */
+    const thumbs = document.querySelectorAll('#thumbs-main .swiper-thumb');
+    thumbs.forEach((t,i) => t.classList.toggle('active', i === galIdx));
+    if (thumbs[galIdx]) {
+      const thumbsEl = document.getElementById('thumbs-main');
+      const thumb = thumbs[galIdx];
+      thumbsEl.scrollLeft = thumb.offsetLeft - thumbsEl.offsetWidth / 2 + thumb.offsetWidth / 2;
+    }
+  }
+  function slideGal(dir) {
+    const n = document.querySelectorAll('#track-main .swiper-page').length;
+    galIdx = galIdx + dir;
+    if (galIdx >= n) galIdx = 0;
+    if (galIdx < 0) galIdx = n - 1;
+    updateGallery();
+  }
+  function goToSlide(idx) {
+    galIdx = idx;
+    updateGallery();
+    resetAutoSlide();
   }
   const galEl = document.getElementById('gallery-main');
   let sx = 0;
-  galEl.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
-  galEl.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) slideGal(dx < 0 ? 1 : -1); });
+
+  /* 자동 슬라이드 3초 */
+  let autoSlide = setInterval(() => slideGal(1), 3000);
+  function resetAutoSlide() {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(() => slideGal(1), 3000);
+  }
+
+  galEl.addEventListener('touchstart', e => {
+    sx = e.touches[0].clientX;
+    clearInterval(autoSlide);
+  }, { passive: true });
+  galEl.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 40) slideGal(dx < 0 ? 1 : -1);
+    resetAutoSlide();
+  });
   buildDots();
 
   /* ── 음악 자동재생 ── */
