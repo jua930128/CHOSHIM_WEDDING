@@ -19,12 +19,12 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     :root {
-      --bg: #fafafa; --bg-warm: #f5f0eb;
+      --bg: #f0f6fd; --bg-warm: #e6f0fa;
       --text-1: #2c2825; --text-2: #6b5e55; --text-3: #a09890; --text-4: #c8c0b8;
       --accent: #b27085; --border: #e8e2dc; --card-bg: #ffffff; --sunday: #f79e9e;
     }
     html {
-      background: #e2efff;
+      background: #c8ddf5;
       min-height: 100%;
     }
     body {
@@ -94,7 +94,7 @@
     .drawer-item:active { background: var(--bg-warm); }
     .drawer-item .di-icon { font-size: 18px; width: 24px; text-align: center; }
     .drawer-divider { height: 1px; background: var(--border); margin: 8px 24px; }
-    .drawer-nav-item { padding: 10px 24px; font-size: 13px; color: var(--text-2); cursor: pointer; display: block; }
+    .drawer-nav-item { padding: 10px 24px; font-size: 13px; color: var(--text-2); cursor: pointer; display: block; text-decoration: none; }
     .drawer-nav-item:active { color: var(--text-1); }
 
     /* ── 공통 ph ── */
@@ -815,13 +815,6 @@
         </div>
       </div>
       <div class="rsvp-field">
-        <label class="rsvp-label">버스 탑승 여부</label>
-        <div class="rsvp-side-btns">
-          <button class="rsvp-side-btn" id="bus-yes" onclick="setBus(true)">탑승함</button>
-          <button class="rsvp-side-btn" id="bus-no" onclick="setBus(false)">탑승안함</button>
-        </div>
-      </div>
-      <div class="rsvp-field">
         <label class="rsvp-label">전달사항</label>
         <input class="rsvp-input" id="rsvp-memo" placeholder="전달하실 내용을 입력해 주세요. (최대 30자)" maxlength="30"/>
       </div>
@@ -995,15 +988,14 @@
     btn.textContent = '전달 중...';
     try {
       await addDoc(collection(db, 'rsvp'), {
-        attend:  window._rsvpAttend ?? true,
-        name:    document.getElementById('rsvp-name').value.trim(),
-        side:    window._rsvpSide ?? '',
-        phone:   document.getElementById('rsvp-phone').value.trim(),
-        extra:   window._rsvpCount ?? 0,
-        meal:    window._rsvpMeal ?? null,
-        bus:     window._rsvpBus  ?? null,
-        memo:    document.getElementById('rsvp-memo').value.trim(),
-        createdAt: serverTimestamp()
+        참석여부:  window._rsvpAttend ?? true,
+        성함:     document.getElementById('rsvp-name').value.trim(),
+        구분:     window._rsvpSide ?? '',
+        연락처:   document.getElementById('rsvp-phone').value.trim(),
+        추가인원:  window._rsvpCount ?? 0,
+        식사여부:  window._rsvpMeal ?? null,
+        전달사항:  document.getElementById('rsvp-memo').value.trim(),
+        등록일시:  serverTimestamp()
       });
       closeModal('modal-rsvp');
       showToast('참석 의사가 전달되었습니다 💌');
