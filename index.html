@@ -151,8 +151,9 @@
     .venue-addr { font-size: 13px; color: var(--text-2); line-height: 1.9; margin-top: 12px; }
     .venue-tel { font-size: 13px; color: var(--text-3); margin-top: 4px; }
     .venue-map { margin: 20px 32px 0; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; }
-    .map-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; padding: 0 32px; }
-    .map-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 20px; border-radius: 10px; font-family: 'Gowun Dodum',sans-serif; font-size: 13px; text-decoration: none; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-1); }
+    .map-buttons { display: flex; flex-direction: row; gap: 8px; margin-top: 24px; padding: 0 32px; }
+    .map-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 8px; border-radius: 12px; font-family: 'Gowun Dodum',sans-serif; font-size: 11px; text-decoration: none; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-1); }
+    .map-btn img { width: 32px; height: 32px; border-radius: 8px; }
     .transport { padding: 0 32px; text-align: left; margin-top: 24px; }
     .transport-item { margin-bottom: 16px; }
     .transport-title { font-size: 14px; color: var(--text-1); margin-bottom: 6px; }
@@ -489,9 +490,18 @@
   </div>
 <div class="venue-map fade" id="naver-map"></div>
   <div class="map-buttons fade">
-    <a class="map-btn" href="https://kko.to/ktFVRAcl02" target="_blank">🗺️ 카카오맵으로 보기</a>
-    <a class="map-btn" href="https://naver.me/GSDA4lu9" target="_blank">🗺️ 네이버지도로 보기</a>
-    <a class="map-btn" href="https://tmap.life/e9d67420" target="_blank">🗺️ 티맵으로 보기</a>
+    <a class="map-btn" href="https://kko.to/ktFVRAcl02" target="_blank">
+      <img src="kakao-logo.png" alt="kakao"/>
+      카카오맵
+    </a>
+    <a class="map-btn" href="https://naver.me/GSDA4lu9" target="_blank">
+      <img src="naver-logo.png" alt="naver"/>
+      네이버지도
+    </a>
+    <a class="map-btn" href="https://tmap.life/e9d67420" target="_blank">
+      <img src="tmap-logo.png" alt="tmap"/>
+      티맵
+    </a>
   </div>
   <div class="transport fade">
     <div class="transport-item">
