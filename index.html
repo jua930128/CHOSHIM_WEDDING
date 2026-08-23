@@ -403,19 +403,36 @@
   <div class="interview-qa fade">
     <div class="interview-item">
       <div class="interview-q">Q1. 신랑 신부를 소개해주세요</div>
-      <div class="interview-a">소개 내용을 입력해주세요.</div>
+      <div class="interview-a">신랑 조건희는 조용한 듯 보여도,
+        곁에 있으면 왜인지 마음이 편안해지는 사람이에요.
+웬만한 일엔 흔들리지 않고, 누구보다 묵묵히 옆을 지켜주거든요.
+신부 심주아는 어디서든 분위기를 만드는 에너지 넘치는 사람이에요.
+정반대인 것 같지만, 이 두 사람이 함께 있으면 왜인지 딱 맞아 떨어져요. 😄</div>
     </div>
     <div class="interview-item">
       <div class="interview-q">Q2. 두 분은 어떻게 만나게 되었나요?</div>
-      <div class="interview-a">만남 이야기를 입력해주세요.</div>
+      <div class="interview-a">두 사람의 첫 만남은 아주 평범했어요.
+건희는 주아의 사수였거든요.
+호랑이 사수가 호랑이 새끼를 키운 셈이랄까요. ㅋㅋ
+근데 어느 순간 자꾸 생각이 나더라고요.
+그게 다였어요. 이미 마음이 기울어진 다음엔 뭐든 달라 보였습니다. 💕</div>
     </div>
     <div class="interview-item">
       <div class="interview-q">Q3. 결혼을 결심하게 된 계기는요?</div>
-      <div class="interview-a">결혼 결심 이야기를 입력해주세요.</div>
+      <div class="interview-a">건희한테 물어보면 아직도 이렇게 말해요. "예뻐서요." ㅋㅋ
+지금도 그 마음 변함없다니, 할 말이 없네요.
+주아는 건희 가족들과 함께하는 시간에서 답을 찾았어요.
+서로 챙기고, 웃음이 끊이지 않는 그 분위기.
+"아, 나도 이런 가정 만들고 싶다" 싶었거든요.
+이유는 달랐지만, 결론은 같았습니다. 🤍</div>
     </div>
     <div class="interview-item">
       <div class="interview-q">Q4. 앞으로의 결혼 생활에 대한 다짐은요?</div>
-      <div class="interview-a">결혼 다짐을 입력해주세요.</div>
+      <div class="interview-a">맛있는 거 같이 먹고, 재밌는 거 같이 보고,
+힘들 땐 말 안 해도 옆에 있어주는 것.
+슬픔도 고통도, 둘이 함께라면 그냥 못 이기고 사라질 거예요.
+소소하지만, 매일 서로한테 잘하는 부부가 되려고 해요.
+그 시작, 11월 21일입니다. 💍</div>
     </div>
   </div>
 </section>
@@ -432,14 +449,16 @@
       <div class="profile-name">조건희</div>
       <div class="profile-desc">#ESTJ #개발자
 
-든든한 남편이 되겠습니다</div>
+흔들릴 때 가장 먼저 떠오르는,
+믿을 수 있는 남편이 될게요. 🩵</div>
     </div>
     <div>
       <div class="profile-label">신부</div>
       <div class="profile-name">심주아</div>
       <div class="profile-desc">#ISFP #개발자
 
-따뜻한 아내가 되겠습니다</div>
+바쁜 하루 끝에 쉬어갈 수 있는,
+그런 아내가 될게요. 🩷</div>
     </div>
   </div>
 </section>
@@ -1135,12 +1154,9 @@
   const galEl = document.getElementById('gallery-main');
   let sx = 0;
 
-  /* 자동 슬라이드 3초 */
-  let autoSlide = setInterval(() => slideGal(1), 5000);
-  function resetAutoSlide() {
-    clearInterval(autoSlide);
-    autoSlide = setInterval(() => slideGal(1), 5000);
-  }
+  /* 자동 슬라이드 OFF */
+  let autoSlide = null;
+  function resetAutoSlide() {} // 자동슬라이드 사용 안 함
 
   galEl.addEventListener('touchstart', e => {
     sx = e.touches[0].clientX;
