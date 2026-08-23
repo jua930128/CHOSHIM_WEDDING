@@ -329,7 +329,8 @@
   <button class="float-btn" onclick="openDrawer()">⋮</button>
 </div>
 <!-- TODO: 배경음악 파일 교체 → src="music.mp3" -->
-<audio id="bgm" loop autoplay src="music.mp3"></audio>=
+<audio id="bgm" loop autoplay src="music.mp3"></audio>
+
 <!-- ═══ ⋯ 드로어 메뉴 ═══ -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 <div class="drawer-container" id="drawer-container">
@@ -1178,15 +1179,24 @@
     bgm.play().then(() => {
       musicOn = true;
       musicBtn.textContent = '🎵';
-    }).catch(() => {
-      // 재생 실패시 🔇 표시
-      musicBtn.textContent = '🔇';
-    });
+    }).catch(() => {});
     document.removeEventListener('click', tryAutoPlay);
-    document.removeEventListener('touchstart', tryAutoPlay, { passive: true });
+    document.removeEventListener('touchstart', tryAutoPlay);
   }
-  document.addEventListener('click', tryAutoPlay, { once: true });
-  document.addEventListener('touchstart', tryAutoPlay, { once: true, passive: true });
+  document.addEventListener('click', tryAutoPlay);
+  document.addEventListener('touchstart', tryAutoPlay);
+
+  function toggleMusic() {
+    if (musicOn) {
+      bgm.pause();
+      musicBtn.textContent = '🔇';
+      musicOn = false;
+    } else {
+      bgm.play().catch(() => {});
+      musicBtn.textContent = '🎵';
+      musicOn = true;
+    }
+  }
 
   /* ── 드로어 ── */
   function openDrawer() {
