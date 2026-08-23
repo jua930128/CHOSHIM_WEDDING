@@ -125,7 +125,7 @@
     .profile-label { font-size: 12px; letter-spacing: .08em; color: var(--text-2); }
     .profile-name { font-size: 18px; font-weight: 500; color: var(--text-1); margin-top: 4px; }
     /* .profile-desc { font-size: 13px; color: var(--text-2); line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); white-space: pre-line; } */
-    .profile-desc { font-size: 12px; color: var(--text-2); line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); white-space: pre-line; }
+    .profile-desc { font-size: 12px; color: var(--text-2); line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); white-space: pre-line; word-break: keep-all; }
     /* ── 캘린더 ── */
     .cal-wrap { max-width: 90%; width: 280px; margin: 0 auto; }
     .cal-date-num { font-size: 20px; color: var(--text-1); letter-spacing: .1rem; }
@@ -449,16 +449,16 @@
       <div class="profile-name">조건희</div>
       <div class="profile-desc">#ESTJ #개발자
 
-흔들릴 때 가장 먼저 떠오르는,
-믿을 수 있는 남편이 될게요. 🩵</div>
+흔들릴 때 가장 먼저,
+믿음직한 남편이 될게요. 🩵</div>
     </div>
     <div>
       <div class="profile-label">신부</div>
       <div class="profile-name">심주아</div>
       <div class="profile-desc">#ISFP #개발자
 
-바쁜 하루 끝에 쉬어갈 수 있는,
-그런 아내가 될게요. 🩷</div>
+하루 끝, 쉬어갈 수 있는
+아내가 될게요. 🩷</div>
     </div>
   </div>
 </section>
@@ -743,7 +743,8 @@
 
 
 <!-- ═══ 모달: 연락하기 ═══ -->
-<div class="modal-overlay" id="modal-contact" onclick="handleOverlayClick(event,'modal-contact')">\n  <div class="modal-box" onclick="event.stopPropagation()">
+<div class="modal-overlay" id="modal-contact" onclick="handleOverlayClick(event,'modal-contact')">
+  <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-header">
       <span class="modal-title">연락하기</span>
       <button class="modal-close" onclick="closeModal('modal-contact')">✕</button>
