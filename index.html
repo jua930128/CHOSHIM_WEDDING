@@ -1179,24 +1179,15 @@
     bgm.play().then(() => {
       musicOn = true;
       musicBtn.textContent = '🎵';
-    }).catch(() => {});
-    document.removeEventListener('click', tryAutoPlay);
-    document.removeEventListener('touchstart', tryAutoPlay);
-  }
-  document.addEventListener('click', tryAutoPlay);
-  document.addEventListener('touchstart', tryAutoPlay);
-
-  function toggleMusic() {
-    if (musicOn) {
-      bgm.pause();
+    }).catch(() => {
+      // 재생 실패시 🔇 표시
       musicBtn.textContent = '🔇';
-      musicOn = false;
-    } else {
-      bgm.play().catch(() => {});
-      musicBtn.textContent = '🎵';
-      musicOn = true;
-    }
+    });
+    document.removeEventListener('click', tryAutoPlay);
+    document.removeEventListener('touchstart', tryAutoPlay, { passive: true });
   }
+  document.addEventListener('click', tryAutoPlay, { once: true });
+  document.addEventListener('touchstart', tryAutoPlay, { once: true, passive: true });
 
   /* ── 드로어 ── */
   function openDrawer() {
