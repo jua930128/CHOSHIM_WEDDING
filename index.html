@@ -1175,17 +1175,27 @@
   const musicBtn = document.getElementById('music-btn');
 
   // 첫 터치/클릭 시 자동재생 시도
+  // function tryAutoPlay() {
+  //   bgm.play().then(() => {
+  //     musicOn = true;
+  //     musicBtn.textContent = '🎵';
+  //   }).catch(() => {});
+  //   document.removeEventListener('click', tryAutoPlay);
+  //   document.removeEventListener('touchstart', tryAutoPlay);
+  // }
+  // document.addEventListener('click', tryAutoPlay);
+  // document.addEventListener('touchstart', tryAutoPlay);
   function tryAutoPlay() {
     bgm.play().then(() => {
       musicOn = true;
       musicBtn.textContent = '🎵';
+      document.removeEventListener('click', tryAutoPlay);
+      document.removeEventListener('touchend', tryAutoPlay);
     }).catch(() => {});
-    document.removeEventListener('click', tryAutoPlay);
-    document.removeEventListener('touchstart', tryAutoPlay);
   }
   document.addEventListener('click', tryAutoPlay);
-  document.addEventListener('touchstart', tryAutoPlay);
-
+  document.addEventListener('touchend', tryAutoPlay);
+  
   function toggleMusic() {
     if (musicOn) {
       bgm.pause();
