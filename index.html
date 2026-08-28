@@ -22,6 +22,7 @@
       --bg: #fdf8f2; --bg-warm: #f5ece0;
       --text-1: #2c2825; --text-2: #6b5e55; --text-3: #a09890; --text-4: #c8c0b8;
       --accent: #b27085; --border: #e8e2dc; --card-bg: #ffffff; --sunday: #f79e9e;
+      --fs: 1;  /* 글씨 배율 (돋보기 슬라이더로 조절) */
     }
     html {
       background: #f0f6fd;
@@ -40,6 +41,83 @@
     .section-eng { font-family: 'Crimson Pro', serif; font-size: 14px; letter-spacing: 0.2rem; color: var(--text-3); opacity: 0.6; margin-bottom: 8px; }
     .section-title { font-size: 18px; font-weight: 400; color: var(--text-1); line-height: 2.8rem; }
     .section-head { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 32px; }
+
+    /* ══════════════════════════════════════════════
+       노안 대응: 읽는 텍스트만 배율(--fs) 적용
+       (레이아웃 깨짐 방지 위해 본문 성격 요소만 선택)
+       ══════════════════════════════════════════════ */
+    body .greeting-text   { font-size: calc(14px * var(--fs)); }
+    body .greeting-names  { font-size: calc(14px * var(--fs)); }
+    body .interview-q     { font-size: calc(14px * var(--fs)); }
+    body .interview-a     { font-size: calc(13px * var(--fs)); }
+    body .profile-desc    { font-size: calc(12px * var(--fs)); }
+    body .venue-name      { font-size: calc(16px * var(--fs)); }
+    body .venue-addr      { font-size: calc(13px * var(--fs)); }
+    body .venue-tel       { font-size: calc(13px * var(--fs)); }
+    body .transport-title { font-size: calc(14px * var(--fs)); }
+    body .transport-desc  { font-size: calc(13px * var(--fs)); }
+    body .nc-title        { font-size: calc(16px * var(--fs)); }
+    body .nc-desc         { font-size: calc(14px * var(--fs)); }
+    body .account-desc    { font-size: calc(14px * var(--fs)); }
+    body .ac-name         { font-size: calc(16px * var(--fs)); }
+    body .ac-bank         { font-size: calc(13px * var(--fs)); }
+    body .ac-number       { font-size: calc(18px * var(--fs)); }
+    body .gb-writer       { font-size: calc(14px * var(--fs)); }
+    body .gb-msg          { font-size: calc(13px * var(--fs)); }
+    body .rsvp-desc       { font-size: calc(14px * var(--fs)); }
+    body .contact-name    { font-size: calc(15px * var(--fs)); }
+    body .flower-info-row { font-size: calc(14px * var(--fs)); }
+    body .photo-share-desc{ font-size: calc(13px * var(--fs)); }
+
+    /* 확대 단계일 때 흐린 글씨색 진하게 (1단계로 오면 자동 원복) */
+    body.fs-boost { --text-2: #574a41; --text-3: #857c74; --text-4: #a89f96; }
+
+    /* ── 돋보기 버튼 활성 표시 ── */
+    .float-btn.zoom-active { background: var(--text-1); color: #fff; }
+
+    /* ── 돋보기 슬라이더 패널 ── */
+    .zoom-panel {
+      position: fixed; bottom: 24px; right: 72px;
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.98);
+      border-radius: 24px; padding: 12px 18px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+      z-index: 201; opacity: 0; pointer-events: none;
+      transform: translateX(10px); transition: opacity .25s, transform .25s;
+    }
+    .zoom-panel.open { opacity: 1; pointer-events: all; transform: translateX(0); }
+    @media (min-width: 480px) {
+      .zoom-panel { right: calc(50% - 480px/2 + 72px); }
+    }
+    .zoom-panel .zp-small { font-size: 13px; color: var(--text-3); }
+    .zoom-panel .zp-big   { font-size: 20px; color: var(--text-1); }
+    .zoom-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 120px; height: 6px; border-radius: 3px;
+      background: var(--border); outline: none;
+    }
+    .zoom-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--accent); cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    }
+    .zoom-slider::-moz-range-thumb {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--accent); cursor: pointer; border: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    }
+    .zoom-label {
+      position: fixed; bottom: 62px; right: 16px;
+      font-size: 10px; color: var(--text-3);
+      background: rgba(255,255,255,0.9); border-radius: 8px;
+      padding: 2px 8px; z-index: 201;
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    .zoom-label.open { opacity: 1; }
+    @media (min-width: 480px) {
+      .zoom-label { right: calc(50% - 480px/2 + 16px); }
+    }
 
     /* ── 히어로 ── */
     .hero { position: relative; width: 100%; aspect-ratio: 393/590; background: #e0e0e0; overflow: hidden; }
@@ -63,14 +141,11 @@
       background: rgba(255,255,255,0.95); border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 2px 12px rgba(0,0,0,0.18); font-size: 18px;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s ease, background 0.2s ease;
     }
     .float-btn.hidden { opacity: 0; pointer-events: none; }
 
-
-
     /* ── ⋯ 메뉴 드로어 ── */
-    /* 드로어를 480px 안에 가두는 컨테이너 */
     .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 300; opacity: 0; pointer-events: none; transition: opacity .3s; }
     .drawer-overlay.open { opacity: 1; pointer-events: all; }
     .drawer-container {
@@ -105,8 +180,8 @@
     .full-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
 
     /* ── 인사말 ── */
-    .greeting-text { font-size: 14px; line-height: 2.5; color: var(--text-2); padding: 0 32px; word-break: keep-all; }
-    .greeting-names { font-size: 14px; color: var(--text-2); line-height: 2.5; margin-top: 24px; padding: 0 32px; }
+    .greeting-text { line-height: 2.5; color: var(--text-2); padding: 0 32px; word-break: keep-all; }
+    .greeting-names { color: var(--text-2); line-height: 2.5; margin-top: 24px; padding: 0 32px; }
     .greeting-names strong { color: var(--text-1); font-weight: 400; }
     .contact-link { margin-top: 20px; font-size: 13px; color: var(--text-3); cursor: pointer; border: none; background: none; font-family: 'Gowun Dodum',sans-serif; }
 
@@ -115,17 +190,16 @@
     .interview-photos .ph { flex: 1; aspect-ratio: 1/1.2; border-radius: 4px; }
     .interview-qa { padding: 0 32px; text-align: left; }
     .interview-item { border-top: 1px solid var(--border); padding: 20px 0; }
-    .interview-q { font-size: 14px; color: var(--text-1); margin-bottom: 12px; line-height: 1.8; }
-    .interview-a { font-size: 13px; color: var(--text-2); line-height: 2.2; white-space: pre-line; }
-
+    .interview-q { color: var(--text-1); margin-bottom: 12px; line-height: 1.8; }
+    .interview-a { color: var(--text-2); line-height: 2.2; white-space: pre-line; }
     .interview-photo { width: 100%; aspect-ratio: 1 / 1.2; object-fit: cover; object-position: center; border-radius: 4px; min-width: 0; }
-    
+
     /* ── 프로필 ── */
     .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 0 32px; text-align: center; }
     .profile-label { font-size: 12px; letter-spacing: .08em; color: var(--text-2); }
     .profile-name { font-size: 18px; font-weight: 500; color: var(--text-1); margin-top: 4px; }
-    /* .profile-desc { font-size: 13px; color: var(--text-2); line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); white-space: pre-line; } */
-    .profile-desc { font-size: 12px; color: var(--text-2); line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); white-space: pre-line; word-break: keep-all; }
+    .profile-desc { color: var(--text-2); line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); white-space: pre-line; word-break: keep-all; }
+
     /* ── 캘린더 ── */
     .cal-wrap { max-width: 90%; width: 280px; margin: 0 auto; }
     .cal-date-num { font-size: 20px; color: var(--text-1); letter-spacing: .1rem; }
@@ -146,24 +220,24 @@
     .dday-text .day { color: var(--accent); }
 
     /* ── 장소 ── */
-    .venue-name { font-size: 16px; color: var(--text-1); }
+    .venue-name { color: var(--text-1); }
     .venue-floor { font-size: 13px; color: var(--accent); letter-spacing: .1em; margin-top: 4px; }
-    .venue-addr { font-size: 13px; color: var(--text-2); line-height: 1.9; margin-top: 12px; }
-    .venue-tel { font-size: 13px; color: var(--text-3); margin-top: 4px; }
+    .venue-addr { color: var(--text-2); line-height: 1.9; margin-top: 12px; }
+    .venue-tel { color: var(--text-3); margin-top: 4px; }
     .venue-map { margin: 20px 32px 0; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; }
     .map-buttons { display: flex; flex-direction: row; gap: 8px; margin-top: 24px; padding: 0 32px; }
     .map-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 12px 8px; border-radius: 12px; font-family: 'Gowun Dodum',sans-serif; font-size: 11px; text-decoration: none; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-1); }
     .map-btn img { width: 32px; height: 32px; border-radius: 8px; }
     .transport { padding: 0 32px; text-align: left; margin-top: 24px; }
     .transport-item { margin-bottom: 16px; }
-    .transport-title { font-size: 14px; color: var(--text-1); margin-bottom: 6px; }
-    .transport-desc { font-size: 13px; color: var(--text-2); line-height: 2.2; white-space: pre-line; }
+    .transport-title { color: var(--text-1); margin-bottom: 6px; }
+    .transport-desc { color: var(--text-2); line-height: 2.2; white-space: pre-line; }
 
     /* ── 안내사항 ── */
     .notice-cards { display: flex; gap: 32px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 32px; -webkit-overflow-scrolling: touch; }
     .notice-card { min-width: 260px; scroll-snap-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .notice-card .nc-title { font-size: 16px; color: var(--text-1); }
-    .notice-card .nc-desc { font-size: 14px; color: var(--text-2); line-height: 2.2; text-align: center; }
+    .notice-card .nc-title { color: var(--text-1); }
+    .notice-card .nc-desc { color: var(--text-2); line-height: 2.2; text-align: center; }
 
     /* ── 갤러리 스와이퍼 ── */
     .swiper-wrap { position: relative; overflow: hidden; width: 100%; }
@@ -175,7 +249,6 @@
     .swiper-dots { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
     .swiper-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all .2s; }
     .swiper-dot.active { background: var(--text-2); width: 16px; border-radius: 3px; }
-    /* 썸네일 스트립 */
     .swiper-thumbs { display: flex; gap: 6px; padding: 10px 6px 0; overflow-x: auto; scrollbar-width: none; }
     .swiper-thumbs::-webkit-scrollbar { display: none; }
     .swiper-thumb { width: 48px; height: 48px; flex-shrink: 0; border-radius: 4px; object-fit: cover; cursor: pointer; opacity: 0.5; border: 2px solid transparent; transition: opacity .1s; }
@@ -187,23 +260,23 @@
     /* ── 방명록 ── */
     .gb-list { padding: 0 32px; text-align: left; max-height: 320px; overflow-y: auto; }
     .gb-item { border-top: 1px solid var(--border); padding: 16px 0; }
-    .gb-writer { font-size: 14px; color: var(--text-1); }
+    .gb-writer { color: var(--text-1); }
     .gb-date { font-size: 12px; color: var(--text-4); margin-left: 8px; }
-    .gb-msg { font-size: 13px; color: var(--text-2); line-height: 2; margin-top: 8px; }
+    .gb-msg { color: var(--text-2); line-height: 2; margin-top: 8px; }
     .gb-empty { font-size: 13px; color: var(--text-4); padding: 24px 0; }
     .gb-btn { margin-top: 20px; padding: 12px 28px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-1); font-family: 'Gowun Dodum',sans-serif; font-size: 14px; cursor: pointer; }
 
     /* ── 계좌 탭 ── */
-    .account-desc { font-size: 14px; color: var(--text-2); line-height: 2.2; padding: 0 32px; white-space: pre-line; }
+    .account-desc { color: var(--text-2); line-height: 2.2; padding: 0 32px; white-space: pre-line; }
     .account-tabs { display: flex; margin: 24px 32px 0; border-radius: 20px; background: var(--bg-warm); padding: 4px; }
     .account-tab { flex: 1; padding: 8px; border-radius: 16px; border: none; background: none; font-family: 'Gowun Dodum',sans-serif; font-size: 14px; color: var(--text-3); cursor: pointer; transition: all .2s; }
     .account-tab.active { background: white; color: var(--text-1); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
     .account-panel { display: none; padding: 0 32px; }
     .account-panel.active { display: block; }
     .account-card-item { border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; margin-top: 12px; text-align: left; }
-    .ac-name { font-size: 16px; color: var(--text-1); margin-bottom: 4px; }
-    .ac-bank { font-size: 13px; color: var(--text-3); }
-    .ac-number { font-family: 'Crimson Pro',serif; font-size: 18px; color: var(--text-1); letter-spacing: .05em; margin: 8px 0; }
+    .ac-name { color: var(--text-1); margin-bottom: 4px; }
+    .ac-bank { color: var(--text-3); }
+    .ac-number { font-family: 'Crimson Pro',serif; color: var(--text-1); letter-spacing: .05em; margin: 8px 0; }
     .ac-actions { display: flex; gap: 8px; margin-top: 12px; }
     .ac-copy { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text-2); font-family: 'Gowun Dodum',sans-serif; font-size: 13px; cursor: pointer; }
     .ac-kakao { flex: 1; padding: 10px; border-radius: 8px; border: none; background: #FEE500; color: #3A1D1D; font-family: 'Gowun Dodum',sans-serif; font-size: 13px; cursor: pointer; }
@@ -212,7 +285,7 @@
     .photo-share { padding: 60px 32px; text-align: center; background: var(--bg-warm); }
     .photo-share-icon { font-size: 48px; margin-bottom: 16px; }
     .photo-share-title { font-size: 20px; color: var(--text-1); margin-bottom: 8px; }
-    .photo-share-desc { font-size: 13px; color: var(--text-2); line-height: 2; margin-bottom: 24px; }
+    .photo-share-desc { color: var(--text-2); line-height: 2; margin-bottom: 24px; }
     .photo-share-btn { padding: 14px 32px; border-radius: 10px; border: 1px solid var(--border); background: white; color: var(--text-1); font-family: 'Gowun Dodum',sans-serif; font-size: 14px; cursor: pointer; }
     .photo-share-date { font-size: 12px; color: var(--text-4); margin-top: 12px; }
 
@@ -241,7 +314,7 @@
     .contact-section-title { font-size: 13px; color: var(--text-3); padding: 16px 24px 8px; letter-spacing: .05em; }
     .contact-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; }
     .contact-role { font-size: 12px; color: var(--text-3); width: 36px; }
-    .contact-name { font-size: 15px; color: var(--text-1); flex: 1; }
+    .contact-name { color: var(--text-1); flex: 1; }
     .contact-btns { display: flex; gap: 8px; }
     .contact-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
@@ -275,7 +348,7 @@
     /* ── 축하화환 모달 ── */
     .flower-body { padding: 24px; }
     .flower-info { background: var(--bg-warm); border-radius: 12px; padding: 20px; margin-bottom: 20px; text-align: left; }
-    .flower-info-row { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; font-size: 14px; color: var(--text-2); }
+    .flower-info-row { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; color: var(--text-2); }
     .flower-info-icon { font-size: 16px; width: 20px; }
     .flower-btn { width: 100%; padding: 16px; border-radius: 10px; border: none; background: var(--text-1); color: white; font-family: 'Gowun Dodum',sans-serif; font-size: 15px; cursor: pointer; }
 
@@ -316,7 +389,7 @@
     }
 
     /* RSVP desc */
-    .rsvp-desc { font-size: 14px; color: var(--text-2); line-height: 2.2; padding: 0 32px; }
+    .rsvp-desc { color: var(--text-2); line-height: 2.2; padding: 0 32px; }
     .rsvp-open-btn { margin-top: 20px; padding: 14px 32px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text-1); font-family: 'Gowun Dodum',sans-serif; font-size: 14px; cursor: pointer; }
   </style>
 </head>
@@ -325,9 +398,19 @@
 <!-- ═══ 플로팅 버튼 그룹 ═══ -->
 <div class="float-btns">
   <button class="float-btn hidden" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <button class="float-btn" id="zoom-btn" onclick="toggleZoomPanel()" aria-label="글씨 크기 조절">🔍</button>
   <button class="float-btn" id="music-btn" onclick="toggleMusic()">🎵</button>
   <button class="float-btn" onclick="openDrawer()">⋮</button>
 </div>
+
+<!-- ═══ 돋보기 슬라이더 패널 ═══ -->
+<div class="zoom-label" id="zoom-label">글씨 크기</div>
+<div class="zoom-panel" id="zoom-panel">
+  <span class="zp-small">가</span>
+  <input type="range" class="zoom-slider" id="zoom-slider" min="1" max="3" step="1" value="1" oninput="applyZoom(this.value)" />
+  <span class="zp-big">가</span>
+</div>
+
 <!-- TODO: 배경음악 파일 교체 → src="music.mp3" -->
 <audio id="bgm" loop autoplay src="music.mp3"></audio>
 
@@ -340,7 +423,6 @@
 
     <div class="drawer-section">빠른 메뉴</div>
     <button class="drawer-item" onclick="openRSVP();closeDrawer()"><span class="di-icon">👤</span>참석의사 전달하기</button>
-    <!-- <button class="drawer-item" onclick="closeDrawer()"><span class="di-icon">📷</span>축하 사진 공유하기</button> -->
     <button class="drawer-item" onclick="openFlower();closeDrawer()"><span class="di-icon">💐</span>축하화환 보내기</button>
 
     <div class="drawer-divider"></div>
@@ -355,7 +437,6 @@
     <a class="drawer-nav-item" href="#sec-guestbook" onclick="closeDrawer()">방명록</a>
     <a class="drawer-nav-item" href="#sec-rsvp" onclick="closeDrawer()">참석의사</a>
     <a class="drawer-nav-item" href="#sec-account" onclick="closeDrawer()">마음전하실 곳</a>
-    <!-- <a class="drawer-nav-item" href="#sec-photo-share" onclick="closeDrawer()">축하 사진 공유</a> -->
     <a class="drawer-nav-item" href="#sec-photo-share" onclick="closeDrawer()">축하화환 선물</a>
   </div>
 </div>
@@ -380,7 +461,6 @@
     서로가 서로의 곁에 있어<br/>더 빛나는 두 사람이<br/>평생을 함께하는 날을<br/>소중한 분들과 나누고자 합니다.<br/><br/>바쁘신 중에도 오셔서<br/>축복해 주시면<br/>더없는 기쁨이 되겠습니다.
   </p>
   <div class="greeting-names fade">
-    <!-- TODO: 실제 부모님 성함으로 교체 -->
     아버지 · 어머니 의 아들 <strong>건희</strong><br/>
     아버지 · 어머니 의 딸 <strong>주아</strong>
   </div>
@@ -465,7 +545,6 @@
 
 <!-- ═══ 6. 중간 사진 2 ═══ -->
 <div class="full-photo fade"><img class="ph" src="middle2.jpg" alt=""></div>
-
 
 <!-- ═══ 7. 캘린더 ═══ -->
 <section id="sec-calendar">
@@ -572,8 +651,6 @@
   </div>
 </section>
 
-
-
 <!-- ═══ 10. 갤러리 ═══ -->
 <section id="sec-gallery">
   <div class="section-head fade">
@@ -582,29 +659,26 @@
   </div>
   <div class="swiper-wrap fade" id="gallery-main">
     <div class="swiper-track" id="track-main">
-      <!-- 세로 -->
-      <div class="swiper-page"><img loading="lazy" src="s1.jpg" alt="Gallery Image 1" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s2.jpg" alt="Gallery Image 2" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="s3.jpg" alt="Gallery Image 3" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s4.jpg" alt="Gallery Image 4" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="s5.jpg" alt="Gallery Image 5" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s6.jpg" alt="Gallery Image 6" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="s7.jpg" alt="Gallery Image 7" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s8.jpg" alt="Gallery Image 8" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="s9.jpg" alt="Gallery Image 9" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s10.jpg" alt="Gallery Image 10" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="s11.jpg" alt="Gallery Image 11" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s12.jpg" alt="Gallery Image 12" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="s13.jpg" alt="Gallery Image 13" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s14.jpg" alt="Gallery Image 14" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="s15.jpg" alt="Gallery Image 15" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s16.jpg" alt="Gallery Image 16" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="s17.jpg" alt="Gallery Image 17" / onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s18.jpg" alt="Gallery Image 18" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <!-- 가로 -->
-      <div class="swiper-page"><img loading="lazy" src="g1.jpg" alt="Gallery Image 11" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="g2.jpg" alt="Gallery Image 12" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="g3.jpg" alt="Gallery Image 13" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="g4.jpg" alt="Gallery Image 14" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="g5.jpg" alt="Gallery Image 15" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="g6.jpg" alt="Gallery Image 16" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
-      <div class="swiper-page"><img loading="lazy" src="g7.jpg" alt="Gallery Image 17" / onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s1.jpg" alt="Gallery Image 1" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s2.jpg" alt="Gallery Image 2" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s3.jpg" alt="Gallery Image 3" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s4.jpg" alt="Gallery Image 4" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s5.jpg" alt="Gallery Image 5" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s6.jpg" alt="Gallery Image 6" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s7.jpg" alt="Gallery Image 7" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s8.jpg" alt="Gallery Image 8" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s9.jpg" alt="Gallery Image 9" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s10.jpg" alt="Gallery Image 10" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s11.jpg" alt="Gallery Image 11" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s12.jpg" alt="Gallery Image 12" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s13.jpg" alt="Gallery Image 13" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s14.jpg" alt="Gallery Image 14" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s15.jpg" alt="Gallery Image 15" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s16.jpg" alt="Gallery Image 16" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="s17.jpg" alt="Gallery Image 17" onclick="openLightbox(this.src)" style="cursor:pointer"><img loading="lazy" src="s18.jpg" alt="Gallery Image 18" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="g1.jpg" alt="Gallery Image 19" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="g2.jpg" alt="Gallery Image 20" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="g3.jpg" alt="Gallery Image 21" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="g4.jpg" alt="Gallery Image 22" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="g5.jpg" alt="Gallery Image 23" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="g6.jpg" alt="Gallery Image 24" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
+      <div class="swiper-page"><img loading="lazy" src="g7.jpg" alt="Gallery Image 25" onclick="openLightbox(this.src)" style="cursor:pointer"></div>
     </div>
     <button class="swiper-btn prev" onclick="slideGal(-1);resetAutoSlide()">‹</button>
     <button class="swiper-btn next" onclick="slideGal(1);resetAutoSlide()">›</button>
     <div class="swiper-dots" id="dots-main"></div>
-    <!-- 썸네일 스트립 -->
     <div class="swiper-thumbs" id="thumbs-main">
       <img class="swiper-thumb active" loading="lazy" src="s1.jpg"  onclick="goToSlide(0)" />
       <img class="swiper-thumb" loading="lazy" src="s3.jpg"  onclick="goToSlide(1)" />
@@ -669,7 +743,7 @@
   <div class="account-panel active" id="panel-groom">
     <div class="account-card-item">
       <div class="ac-name">조건희</div>
-      <div class="ac-bank"><!-- TODO: 은행명 -->농협</div>
+      <div class="ac-bank">농협</div>
       <div class="ac-number">130066-51-031496</div>
       <div class="ac-actions">
         <button class="ac-copy" onclick="copyText('13006651031496')">계좌 복사</button>
@@ -677,7 +751,7 @@
       </div>
     </div>
     <div class="account-card-item">
-      <div class="ac-name">조성욱<!-- TODO: 성함 --></div>
+      <div class="ac-name">조성욱</div>
       <div class="ac-bank">농협</div>
       <div class="ac-number">130066-56-033627</div>
       <div class="ac-actions">
@@ -686,7 +760,7 @@
       </div>
     </div>
     <div class="account-card-item">
-      <div class="ac-name">장석란<!-- TODO: 성함 --></div>
+      <div class="ac-name">장석란</div>
       <div class="ac-bank">농협</div>
       <div class="ac-number">130066-56-143680</div>
       <div class="ac-actions">
@@ -707,7 +781,7 @@
       </div>
     </div>
     <div class="account-card-item">
-      <div class="ac-name">심재선<!-- TODO: 성함 --></div>
+      <div class="ac-name">심재선</div>
       <div class="ac-bank">농협</div>
       <div class="ac-number">646-02-118690</div>
       <div class="ac-actions">
@@ -716,7 +790,7 @@
       </div>
     </div>
     <div class="account-card-item">
-      <div class="ac-name">최병희<!-- TODO: 성함 --></div>
+      <div class="ac-name">최병희</div>
       <div class="ac-bank">국민은행</div>
       <div class="ac-number">457601-04-186343</div>
       <div class="ac-actions">
@@ -727,16 +801,7 @@
   </div>
 </section>
 
-<!-- ═══ 15-1. 축하 사진 공유 ═══ -->
-<!-- <div class="photo-share fade" id="sec-photo-share">
-  <div class="photo-share-icon">📸</div>
-  <div class="photo-share-title">축하 사진 공유</div>
-  <p class="photo-share-desc">신랑신부의 행복한 순간을 담아주세요.<br/>예식 당일, 아래 버튼을 통해 사진을 올려주세요.<br/>많은 참여 부탁드려요!</p>
-  <button class="photo-share-btn">사진 업로드</button>
-  <div class="photo-share-date">2026-11-21 예식 당일부터 업로드 가능합니다.</div>
-</div> -->
-
-<!-- ═══ 15-2. 화환 선물하기 ═══ -->
+<!-- ═══ 15. 화환 선물하기 ═══ -->
 <div class="photo-share fade" id="sec-photo-share">
   <div class="photo-share-icon">💐</div>
   <div class="photo-share-title">축하화환 선물</div>
@@ -762,8 +827,6 @@
 </div>
 <footer><p>조건희 · 심주아 · 2026.11.21</p><p style="margin-top:4px">Copyright 2026. CHOSHIM WEDDING.</p></footer>
 
-
-
 <!-- ═══ 모달: 연락하기 ═══ -->
 <div class="modal-overlay" id="modal-contact" onclick="handleOverlayClick(event,'modal-contact')">
   <div class="modal-box" onclick="event.stopPropagation()">
@@ -782,7 +845,7 @@
     </div>
     <div class="contact-row">
       <span class="contact-role">아버지</span>
-      <span class="contact-name"><!-- TODO -->조성욱</span>
+      <span class="contact-name">조성욱</span>
       <div class="contact-btns">
         <button class="contact-btn" onclick="call('010-5475-9029')">📞</button>
         <button class="contact-btn" onclick="sms('010-5475-9029')">✉️</button>
@@ -790,7 +853,7 @@
     </div>
     <div class="contact-row">
       <span class="contact-role">어머니</span>
-      <span class="contact-name"><!-- TODO -->장석란</span>
+      <span class="contact-name">장석란</span>
       <div class="contact-btns">
         <button class="contact-btn" onclick="call('010-3287-9029')">📞</button>
         <button class="contact-btn" onclick="sms('010-3287-9029')">✉️</button>
@@ -807,7 +870,7 @@
     </div>
     <div class="contact-row">
       <span class="contact-role">아버지</span>
-      <span class="contact-name"><!-- TODO -->심재선</span>
+      <span class="contact-name">심재선</span>
       <div class="contact-btns">
         <button class="contact-btn" onclick="call('010-8860-8820')">📞</button>
         <button class="contact-btn" onclick="sms('010-8860-8820')">✉️</button>
@@ -815,7 +878,7 @@
     </div>
     <div class="contact-row">
       <span class="contact-role">어머니</span>
-      <span class="contact-name"><!-- TODO -->최병희</span>
+      <span class="contact-name">최병희</span>
       <div class="contact-btns">
         <button class="contact-btn" onclick="call('010-2473-8820')">📞</button>
         <button class="contact-btn" onclick="sms('010-2473-8820')">✉️</button>
@@ -910,7 +973,6 @@
         <div class="flower-info-row"><span class="flower-info-icon">📍</span><span>인천 부평구 길주로 623</span></div>
       </div>
       <p style="font-size:13px;color:var(--text-3);text-align:center;margin-bottom:20px;line-height:2">신랑, 신부의 결혼을 축하해주세요.<br/>예식일에 맞춰 웨딩홀로 배송됩니다.</p>
-      <!-- TODO: 실제 화환 업체 링크로 교체 -->
       <button class="flower-btn" onclick="window.open('https://shop4.flowerbiz.co.kr/')">💐 축하화환 보내기</button>
     </div>
   </div>
@@ -970,17 +1032,13 @@
     } catch(e) { console.error(e); }
   }
 
-  /* ── 방명록 제출 ── */
-  // XSS 방지: HTML 태그 제거
   function sanitize(str) {
     return str.replace(/[<>&"'`]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;','`':'&#96;'}[c]));
   }
 
   loadGuestbook();
 
-  // 욕설 필터
   const BAD_WORDS = [
-    // 한국어 욕설
     '씨발','시발','ㅅㅂ','씨바','시바','씨팔','시팔',
     '병신','ㅂㅅ','븅신','벙신',
     '개새끼','개색끼','개세끼','개놈','개년','개같','개소리',
@@ -998,7 +1056,6 @@
     '걸레','갈보','화냥',
     '돼지','돼지새끼',
     '꺼져라','뒤져라','죽어라','죽여',
-    // 영어 욕설
     'fuck','f**k','fucker','fucking','fck',
     'shit','sh1t','s**t',
     'bitch','b**ch','btch',
@@ -1007,7 +1064,6 @@
     'damn','hell','crap',
     'motherfucker','nigger','nigga',
     'whore','slut',
-    // 혐오/차별 표현
     '장애인','애미','애비','어미','에미',
   ];
   function hasBadWord(str) {
@@ -1033,7 +1089,6 @@
     } catch(e) { showToast('오류가 발생했습니다'); console.error(e); }
   };
 
-  /* ── RSVP 제출 ── */
   window.submitRSVP = async function() {
     const btn = document.getElementById('rsvp-submit');
     btn.disabled = true;
@@ -1056,19 +1111,43 @@
 </script>
 
 <script>
+  /* ══════════════════════════════════════════════
+     노안 대응: 돋보기 슬라이더 (1~3단계 글씨 확대)
+     핀치 줌은 viewport 설정으로 계속 차단됨
+     ══════════════════════════════════════════════ */
+  // 배율 단계: 1단계=1.0(원래), 2단계=1.25, 3단계=1.5
+  const FS_SCALE = { 1: 1, 2: 1.25, 3: 1.5 };
+
+  function toggleZoomPanel() {
+    const panel = document.getElementById('zoom-panel');
+    const label = document.getElementById('zoom-label');
+    const btn   = document.getElementById('zoom-btn');
+    const open  = panel.classList.toggle('open');
+    label.classList.toggle('open', open);
+    btn.classList.toggle('zoom-active', open);
+  }
+
+  function applyZoom(step) {
+    const scale = FS_SCALE[step] || 1;
+    document.documentElement.style.setProperty('--fs', scale);
+    // 2단계 이상이면 흐린 글씨색을 진하게, 1단계로 오면 원래 색 복귀
+    document.body.classList.toggle('fs-boost', Number(step) > 1);
+    const labels = { 1: '보통', 2: '크게', 3: '아주 크게' };
+    showToast('글씨 크기: ' + labels[step]);
+  }
+
   /* ── 라이트박스 ── */
   let lbImages = [];
   let lbIdx = 0;
 
   function openLightbox(src) {
-    // 갤러리 전체 이미지 수집
     lbImages = [...document.querySelectorAll('#track-main img')].map(i => i.src);
     lbIdx = lbImages.indexOf(src);
     if (lbIdx < 0) lbIdx = 0;
     updateLightbox();
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
-    clearInterval(autoSlide); // 라이트박스 열면 자동슬라이드 멈춤
+    clearInterval(autoSlide);
   }
   function closeLightbox() {
     document.getElementById('lightbox').classList.remove('open');
@@ -1083,18 +1162,15 @@
     document.getElementById('lightbox-img').src = lbImages[lbIdx];
     document.getElementById('lightbox-counter').textContent = `${lbIdx + 1} / ${lbImages.length}`;
   }
-  // 배경 클릭시 닫기
   document.getElementById('lightbox').addEventListener('click', function(e) {
     if (e.target === this) closeLightbox();
   });
-  // 키보드 지원
   document.addEventListener('keydown', e => {
     if (!document.getElementById('lightbox').classList.contains('open')) return;
     if (e.key === 'ArrowRight') lightboxNav(1);
     if (e.key === 'ArrowLeft') lightboxNav(-1);
     if (e.key === 'Escape') closeLightbox();
   });
-  // 터치 스와이프
   let lbSx = 0;
   document.getElementById('lightbox').addEventListener('touchstart', e => { lbSx = e.touches[0].clientX; }, { passive: true });
   document.getElementById('lightbox').addEventListener('touchend', e => {
@@ -1153,7 +1229,6 @@
   function updateGallery() {
     document.getElementById('track-main').style.transform = `translateX(-${galIdx*100}%)`;
     document.querySelectorAll('#dots-main .swiper-dot').forEach((d,i) => d.classList.toggle('active', i === galIdx));
-    /* 썸네일 활성화 + 스크롤 */
     const thumbs = document.querySelectorAll('#thumbs-main .swiper-thumb');
     thumbs.forEach((t,i) => t.classList.toggle('active', i === galIdx));
     if (thumbs[galIdx]) {
@@ -1177,9 +1252,8 @@
   const galEl = document.getElementById('gallery-main');
   let sx = 0;
 
-  /* 자동 슬라이드 OFF */
   let autoSlide = null;
-  function resetAutoSlide() {} // 자동슬라이드 사용 안 함
+  function resetAutoSlide() {}
 
   galEl.addEventListener('touchstart', e => {
     sx = e.touches[0].clientX;
@@ -1197,17 +1271,6 @@
   const bgm = document.getElementById('bgm');
   const musicBtn = document.getElementById('music-btn');
 
-  // 첫 터치/클릭 시 자동재생 시도
-  // function tryAutoPlay() {
-  //   bgm.play().then(() => {
-  //     musicOn = true;
-  //     musicBtn.textContent = '🎵';
-  //   }).catch(() => {});
-  //   document.removeEventListener('click', tryAutoPlay);
-  //   document.removeEventListener('touchstart', tryAutoPlay);
-  // }
-  // document.addEventListener('click', tryAutoPlay);
-  // document.addEventListener('touchstart', tryAutoPlay);
   function tryAutoPlay() {
     bgm.play().then(() => {
       musicOn = true;
@@ -1287,11 +1350,6 @@
     document.getElementById('meal-yes').classList.toggle('selected', v);
     document.getElementById('meal-no').classList.toggle('selected', !v);
   }
-  function setBus(v) {
-    window._rsvpBus = v;
-    document.getElementById('bus-yes').classList.toggle('selected', v);
-    document.getElementById('bus-no').classList.toggle('selected', !v);
-  }
   function checkAgree() {
     document.getElementById('rsvp-submit').disabled = !document.getElementById('rsvp-agree').checked;
   }
@@ -1310,10 +1368,10 @@
     a.download = 'wedding.ics';
     a.click();
   }
+
   /* ── 카카오 초기화 ── */
   Kakao.init('40ca86dc246dd3654600faa0dc6f1b82');
 
-  /* ── 카카오 공유 ── */
   function shareKakao() {
     if (!Kakao.isInitialized()) {
       showToast('카카오 SDK 초기화 실패');
@@ -1343,7 +1401,6 @@
       });
     } catch(e) {
       console.error('카카오 공유 오류:', e);
-      /* 실패시 링크 복사로 대체 */
       copyLink();
       showToast('링크가 복사되었습니다');
     }
