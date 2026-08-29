@@ -98,6 +98,23 @@
     /* 연락하기 전화/문자 아이콘 버튼도 크게 */
     body .contact-btn      { font-size: calc(16px * var(--fs)); }
 
+    /* 장소 층수 · 캘린더 날짜/시간도 큰글씨 모드 적용 */
+    body .venue-floor      { font-size: calc(13px * var(--fs)); }
+    body .cal-date-num     { font-size: calc(20px * var(--fs)); }
+    body .cal-date-ko      { font-size: calc(14px * var(--fs)); }
+
+    /* 카카오페이: 평소엔 '카카오페이' 한 줄, 노안 확대 시 '카카오 / 페이' 두 줄 */
+    .kakaopay-label { font-size: calc(13px * var(--fs)); }
+    body.fs-boost .ac-kakao .kakaopay-label {
+      font-size: 0;                    /* 원래 '카카오페이' 글자 숨김 */
+      line-height: 1.2;
+    }
+    body.fs-boost .ac-kakao .kakaopay-label::before {
+      content: "카카오\A페이";          /* \A = 줄바꿈 */
+      white-space: pre;
+      font-size: calc(13px * var(--fs)); /* 숨긴 만큼 여기서 다시 크게 */
+    }
+
     /* 확대 단계일 때 흐린 글씨색 진하게 (1단계로 오면 자동 원복) */
     body.fs-boost { --text-2: #574a41; --text-3: #857c74; --text-4: #a89f96; }
 
@@ -345,8 +362,8 @@
     /* ── 연락하기 모달 ── */
     .contact-section-title { font-size: 13px; color: var(--text-3); padding: 16px 24px 8px; letter-spacing: .05em; }
     .contact-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; }
+        .contact-role { font-size: 12px; color: var(--text-3); width: calc(48px * var(--fs)); flex-shrink: 0; white-space: nowrap; }
     /* .contact-role { font-size: 12px; color: var(--text-3); width: 36px; } */
-        .contact-role { font-size: 12px; color: var(--text-3); width: 48px; flex-shrink: 0; white-space: nowrap; }
     .contact-name { color: var(--text-1); flex: 1; }
     .contact-btns { display: flex; gap: 8px; }
     .contact-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
@@ -780,7 +797,7 @@
       <div class="ac-number">130066-51-031496</div>
       <div class="ac-actions">
         <button class="ac-copy" onclick="copyText('13006651031496')">계좌 복사</button>
-        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FCnp2WTFN')">💛 카카오페이</button>
+        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FCnp2WTFN')">💛 <span class="kakaopay-label">카카오페이</span></button>
       </div>
     </div>
     <div class="account-card-item">
@@ -789,7 +806,7 @@
       <div class="ac-number">130066-56-033627</div>
       <div class="ac-actions">
         <button class="ac-copy" onclick="copyText('13006656033627')">계좌 복사</button>
-        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FCnp2WTFN')">💛 카카오페이</button>
+        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FCnp2WTFN')">💛 <span class="kakaopay-label">카카오페이</span></button>
       </div>
     </div>
     <div class="account-card-item">
@@ -798,7 +815,7 @@
       <div class="ac-number">130066-56-143680</div>
       <div class="ac-actions">
         <button class="ac-copy" onclick="copyText('13006656143680')">계좌 복사</button>
-        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FCnp2WTFN')">💛 카카오페이</button>
+        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FCnp2WTFN')">💛 <span class="kakaopay-label">카카오페이</span></button>
       </div>
     </div>
   </div>
@@ -810,7 +827,7 @@
       <div class="ac-number">110-402-021292</div>
       <div class="ac-actions">
         <button class="ac-copy" onclick="copyText('110402021292')">계좌 복사</button>
-        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FHyWhbVZl')">💛 카카오페이</button>
+        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FHyWhbVZl')">💛 <span class="kakaopay-label">카카오페이</span></button>
       </div>
     </div>
     <div class="account-card-item">
@@ -819,7 +836,7 @@
       <div class="ac-number">646-02-118690</div>
       <div class="ac-actions">
         <button class="ac-copy" onclick="copyText('64602118690')">계좌 복사</button>
-        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FHyWhbVZl')">💛 카카오페이</button>
+        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FHyWhbVZl')">💛 <span class="kakaopay-label">카카오페이</span></button>
       </div>
     </div>
     <div class="account-card-item">
@@ -828,7 +845,7 @@
       <div class="ac-number">457601-04-186343</div>
       <div class="ac-actions">
         <button class="ac-copy" onclick="copyText('45760104186343')">계좌 복사</button>
-        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FHyWhbVZl')">💛 카카오페이</button>
+        <button class="ac-kakao" onclick="window.open('https://qr.kakaopay.com/FHyWhbVZl')">💛 <span class="kakaopay-label">카카오페이</span></button>
       </div>
     </div>
   </div>
