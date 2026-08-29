@@ -191,6 +191,36 @@
     }
     .float-btn.hidden { opacity: 0; pointer-events: none; }
 
+    /* ── 돋보기 버튼 주목 유도 ── */
+    /* 통통 튀는 애니메이션 (5초마다 잠깐 실행) */
+    @keyframes zoomBounce {
+      0%, 100% { transform: translateY(0); }
+      15%      { transform: translateY(-8px); }
+      30%      { transform: translateY(0); }
+      45%      { transform: translateY(-5px); }
+      60%      { transform: translateY(0); }
+    }
+    .float-btn.attention { animation: zoomBounce 1.2s ease; }
+
+    /* '글씨 크게' 상시 라벨 (돋보기 버튼 왼쪽에 붙음) */
+    .zoom-hint {
+      position: absolute; right: 52px; top: 50%; transform: translateY(-50%);
+      background: var(--accent); color: #fff;
+      font-family: 'Gowun Dodum', sans-serif; font-size: 17px; font-weight: 700;
+      padding: 7px 12px; border-radius: 14px; white-space: nowrap;
+      text-align: center; line-height: 1.25;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18); pointer-events: none;
+    }
+    /* 라벨 꼬리 (말풍선 삼각형) */
+    .zoom-hint::after {
+      content: ""; position: absolute; right: -5px; top: 50%;
+      transform: translateY(-50%);
+      border-left: 6px solid var(--accent);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+    .zoom-hint.hide { opacity: 0; transition: opacity .3s; }
+
     /* ── ⋯ 메뉴 드로어 ── */
     .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 300; opacity: 0; pointer-events: none; transition: opacity .3s; }
     .drawer-overlay.open { opacity: 1; pointer-events: all; }
@@ -448,7 +478,11 @@
 <!-- ═══ 플로팅 버튼 그룹 ═══ -->
 <div class="float-btns">
   <button class="float-btn hidden" id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-  <button class="float-btn" id="zoom-btn" onclick="toggleZoomPanel()" aria-label="글씨 크기 조절">🔍</button>
+  <div style="position:relative; display:flex;">
+    <span class="zoom-hint" id="zoom-hint">크게<br>보기</span>
+        <button class="float-btn" id="zoom-btn" onclick="toggleZoomPanel()" aria-label="글씨 크기 조절">🔍</button>
+  </div>
+  <!-- <button class="float-btn" id="zoom-btn" onclick="toggleZoomPanel()" aria-label="글씨 크기 조절">🔍</button> -->
   <button class="float-btn" id="music-btn" onclick="toggleMusic()">🎵</button>
   <button class="float-btn" onclick="openDrawer()">⋮</button>
 </div>
@@ -1199,6 +1233,24 @@
     label.classList.toggle('open', open);
     btn.classList.toggle('zoom-active', open);
   }
+
+  /* ── 돋보기 버튼 주기적으로 흔들어 시선 끌기 ── */
+  let zoomUsed = false;                      // 한 번이라도 누르면 true
+  const zoomBtnEl  = document.getElementById('zoom-btn');
+  const zoomHintEl = document.getElementById('zoom-hint');
+
+  const zoomShakeTimer = setInterval(() => {
+    if (zoomUsed) { clearInterval(zoomShakeTimer); return; }  // 사용했으면 중단
+    zoomBtnEl.classList.add('attention');
+    setTimeout(() => zoomBtnEl.classList.remove('attention'), 1300);
+  }, 5000);                                  // 5초마다 반복
+
+  // 돋보기를 누르면 흔들림·라벨 정리
+  zoomBtnEl.addEventListener('click', () => {
+    zoomUsed = true;
+    zoomBtnEl.classList.remove('attention');
+    if (zoomHintEl) zoomHintEl.classList.add('hide');  // 라벨 숨김
+  });
 
   function applyZoom(step) {
     const scale = FS_SCALE[step] || 1;
