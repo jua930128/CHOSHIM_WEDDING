@@ -516,7 +516,7 @@
 
 <!-- ═══ ⋯ 드로어 메뉴 ═══ -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
-<div class="drawer-container" id="drawer-container">
+<div class="drawer-container" id="drawer-container" onclick="handleDrawerBgClick(event)">
   <div class="drawer" id="drawer">
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
     <div style="height:48px;"></div>
@@ -1447,6 +1447,11 @@
     document.getElementById('drawer-container').classList.remove('open');
     document.getElementById('drawer-overlay').classList.remove('open');
     document.body.style.overflow = '';
+  }
+
+  // 드로어 바깥(빈 공간) 클릭 시 닫기 — 메뉴 패널 안쪽 클릭은 무시
+  function handleDrawerBgClick(e) {
+    if (e.target.id === 'drawer-container') closeDrawer();
   }
 
   /* ── 모달 ── */
