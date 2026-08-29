@@ -259,7 +259,10 @@
 
     /* ── 방명록 ── */
     .gb-list { padding: 0 32px; text-align: left; max-height: 320px; overflow-y: auto; }
-    .gb-item { border-top: 1px solid var(--border); padding: 16px 0; }
+    /* .gb-item { border-top: 1px solid var(--border); padding: 16px 0; } */
+    .gb-item { border-top: 1px solid var(--border); padding: 16px 0; position: relative; }
+    .gb-delete { position: absolute; top: 14px; right: 0; background: none; border: none; cursor: pointer; font-size: 14px; color: var(--text-4); padding: 4px; line-height: 1; }
+    .gb-delete:active { color: var(--accent); }
     .gb-writer { color: var(--text-1); }
     .gb-date { font-size: 12px; color: var(--text-4); margin-left: 8px; }
     .gb-msg { color: var(--text-2); line-height: 2; margin-top: 8px; }
@@ -993,7 +996,7 @@
 <!-- ═══ Firebase + 메인 JS ═══ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, orderBy, query, serverTimestamp }
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -1019,11 +1022,12 @@
         return;
       }
       list.innerHTML = '';
-      snap.forEach(doc => {
-        const d = doc.data();
+      snap.forEach(docSnap => {
+        const d = docSnap.data();
         const date = d.createdAt?.toDate?.().toLocaleDateString('ko') || '';
         list.innerHTML += `
           <div class="gb-item">
+            <button class="gb-delete" onclick="deleteGuestbook('${docSnap.id}')" aria-label="삭제">🗑️</button>
             <span class="gb-writer">${sanitize(d.writer)}</span>
             <span class="gb-date">${date}</span>
             <div class="gb-msg">${sanitize(d.message)}</div>
@@ -1072,19 +1076,41 @@
 
   window.submitGuestbook = async function() {
     const writer = sanitize(document.getElementById('gb-writer').value.trim());
+    const pw     = document.getElementById('gb-password').value.trim();  // 비밀번호 (삭제 확인용)
     const msg    = sanitize(document.getElementById('gb-msg').value.trim());
     if (!writer || !msg) { showToast('이름과 내용을 입력해주세요'); return; }
+    if (!pw) { showToast('비밀번호를 입력해주세요'); return; }  // 삭제하려면 비번 필수
     if (hasBadWord(writer) || hasBadWord(msg)) { showToast('부적절한 내용이 포함되어 있습니다'); return; }
     if (writer.length > 10) { showToast('이름은 10자 이내로 입력해주세요'); return; }
     if (msg.length > 100) { showToast('내용은 100자 이내로 입력해주세요'); return; }
     try {
       await addDoc(collection(db, 'guestbook'), {
-        writer, message: msg, createdAt: serverTimestamp()
+        writer, message: msg, password: pw, createdAt: serverTimestamp()  // 비번도 함께 저장
       });
       document.getElementById('gb-writer').value = '';
+      document.getElementById('gb-password').value = '';
       document.getElementById('gb-msg').value = '';
       closeModal('modal-guestbook');
       showToast('방명록이 등록되었습니다 🎊');
+      loadGuestbook();
+    } catch(e) { showToast('오류가 발생했습니다'); console.error(e); }
+  };
+
+  /* ── 방명록 삭제 (작성자 비밀번호 확인) ── */
+  window.deleteGuestbook = async function(id) {
+    const input = prompt('작성 시 입력한 비밀번호를 입력해주세요.');
+    if (input === null) return;              // 취소 누르면 중단
+    const pw = input.trim();
+    if (!pw) { showToast('비밀번호를 입력해주세요'); return; }
+    try {
+      // 해당 글을 다시 읽어와 비번 비교
+      const snap = await getDocs(collection(db, 'guestbook'));
+      const target = snap.docs.find(d => d.id === id);
+      if (!target) { showToast('이미 삭제된 글입니다'); loadGuestbook(); return; }
+      if (target.data().password !== pw) { showToast('비밀번호가 일치하지 않습니다'); return; }
+      // 비번 일치 → 삭제
+      await deleteDoc(doc(db, 'guestbook', id));
+      showToast('방명록이 삭제되었습니다');
       loadGuestbook();
     } catch(e) { showToast('오류가 발생했습니다'); console.error(e); }
   };
@@ -1095,14 +1121,14 @@
     btn.textContent = '전달 중...';
     try {
       await addDoc(collection(db, 'rsvp'), {
-        참석여부:  window._rsvpAttend ?? true,
-        성함:     document.getElementById('rsvp-name').value.trim(),
-        구분:     window._rsvpSide ?? '',
-        연락처:   document.getElementById('rsvp-phone').value.trim(),
-        추가인원:  window._rsvpCount ?? 0,
-        식사여부:  window._rsvpMeal ?? null,
-        전달사항:  document.getElementById('rsvp-memo').value.trim(),
-        등록일시:  serverTimestamp()
+        attend:    window._rsvpAttend ?? true,
+        name:      document.getElementById('rsvp-name').value.trim(),
+        side:      window._rsvpSide ?? '',
+        phone:     document.getElementById('rsvp-phone').value.trim(),
+        guestCount: window._rsvpCount ?? 0,
+        meal:      window._rsvpMeal ?? null,
+        memo:      document.getElementById('rsvp-memo').value.trim(),
+        createdAt: serverTimestamp()
       });
       closeModal('modal-rsvp');
       showToast('참석 의사가 전달되었습니다 💌');
